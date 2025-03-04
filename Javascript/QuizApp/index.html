@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <section class="introduction">
+      <div>
+        <h2>Quiz Question Input Form</h2>
+      </div>
+    </section>
+
+    <form id="question-input-form">
+      <div>
+        <label for="question">Enter the Question:</label>
+        <input type="text" id="question" name="question" required />
+      </div>
+      <!-- Question -->
+      <div id="answers-container">
+        <!-- Possible Answers -->
+        <label for="option1">Answer 1:</label>
+        <input type="text" id="option1" name="option1" required />
+
+        <label for="option2">Answer 2:</label>
+        <input type="text" id="option2" name="option2" required />
+
+        <label for="option3">Answer 3:</label>
+        <input type="text" id="option3" name="option3" required />
+
+        <label for="option4">Answer 4:</label>
+        <input type="text" id="option4" name="option4" required />
+      </div>
+
+      <!-- Correct answer -->
+      <div>
+        <fieldset>
+          <legend>Select the Correct Answer:</legend>
+          <label for="correct-answer1">No. 1</label>
+          <input
+            type="radio"
+            id="correct-answer1"
+            name="correct-answer"
+            value="option1"
+            required
+          />
+
+          <label for="correct-answer2">No. 2</label>
+          <input
+            type="radio"
+            id="correct-answer2"
+            name="correct-answer"
+            value="option2"
+            required
+          />
+
+          <label for="correct-answer3">No. 3</label>
+          <input
+            type="radio"
+            id="correct-answer3"
+            name="correct-answer"
+            value="option3"
+            required
+          />
+
+          <label for="correct-answer4">No. 4</label>
+          <input
+            type="radio"
+            id="correct-answer4"
+            name="correct-answer"
+            value="option4"
+            required
+          />
+        </fieldset>
+      </div>
+      <div class="btn-div">
+        <button type="submit" class="btn-style">Submit Question</button>
+      </div>
+    </form>
+
+    <script src="index.js"></script>
+  </body>
+</html>
