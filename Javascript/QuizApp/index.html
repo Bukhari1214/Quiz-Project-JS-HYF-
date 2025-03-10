@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuizApp@Wasim</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Quiz Question Input Form</h1>
+    </header>
+
+    <form class="question-input-form">
+      <!-- Possible Question -->
+      <label for="question">Enter the Question:</label>
+      <input
+        type="text"
+        id="question"
+        name="question"
+        maxlength="140"
+        placeholder="Enter Your Question Here"
+        required
+      />
+      <!-- Possible Answers -->
+      <div class="answers-container">
+        <label for="option1">Answer # 1:</label>
+        <input
+          type="text"
+          id="option1"
+          name="option1"
+          placeholder="Answer option 01"
+          required
+        />
+        <label for="option2">Answer # 2:</label>
+        <input
+          type="text"
+          id="option2"
+          name="option2"
+          placeholder="Answer option 02"
+          required
+        />
+        <label for="option3">Answer # 3:</label>
+        <input
+          type="text"
+          id="option3"
+          name="option3"
+          placeholder="Answer option 03"
+          required
+        />
+        <label for="option4">Answer # 4:</label>
+        <input
+          type="text"
+          id="option4"
+          name="option4"
+          placeholder="Answer option 04"
+          required
+        />
+      </div>
+      <!-- Correct answer -->
+      <div class="select-correct-answer">
+        <fieldset>
+          <legend>Select the Correct Answer:</legend>
+          <label for="correct-answer1"># 1</label>
+          <input
+            type="radio"
+            id="correct-answer1"
+            name="correct-answer"
+            value="option1"
+            required
+          />
+
+          <label for="correct-answer2"># 2</label>
+          <input
+            type="radio"
+            id="correct-answer2"
+            name="correct-answer"
+            value="option2"
+            required
+          />
+
+          <label for="correct-answer3"># 3</label>
+          <input
+            type="radio"
+            id="correct-answer3"
+            name="correct-answer"
+            value="option3"
+            required
+          />
+
+          <label for="correct-answer4"># 4</label>
+          <input
+            type="radio"
+            id="correct-answer4"
+            name="correct-answer"
+            value="option4"
+            required
+          />
+        </fieldset>
+      </div>
+      <div class="btn-wrapper">
+        <button type="submit" class="control-buttons">Submit Question</button>
+      </div>
+    </form>
+
+    <script src="questionsOfQuiz.js"></script>
+    <script src="index.js"></script>
+  </body>
+</html>

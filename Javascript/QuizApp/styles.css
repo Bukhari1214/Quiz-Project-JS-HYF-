@@ -1,0 +1,112 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+  font-family: system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-image: url("/images/background.webp");
+  background-size: cover;
+  background-position: center;
+  color: rgb(247, 244, 244);
+  margin: 0;
+  padding: 0;
+}
+header {
+  width: 80%;
+  padding: 10px;
+  background: linear-gradient(
+    30deg,
+    rgba(0, 0, 255, 0.5) 30%,
+    rgba(13, 12, 39, 0.6) 50%,
+    rgba(0, 0, 255, 0.5) 70%
+  );
+  display: flex;
+  justify-content: space-around;
+  border-radius: 10px 3px 10px 3px;
+}
+
+.question-input-form {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Aligns items to the left */
+}
+
+.question-input-form label {
+  font-weight: bold;
+}
+
+.question-input-form input[type="text"] {
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid #796d6d;
+  border-radius: 5px;
+  width: 100%; /* Ensures input takes full width of the container */
+  font-size: 14px;
+  background-color: lightcyan;
+  color: black;
+}
+
+.question-input-form input[type="text"]::placeholder {
+  font-style: italic;
+  color: brown;
+}
+
+.answers-container {
+  text-align: left;
+  display: block; /* Ensure each label occupies its own line */
+}
+
+.select-correct-answer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.btn-wrapper button:hover {
+  transform: scale(1.1);
+  border-color: aquamarine;
+  color: aquamarine;
+}
+
+.control-buttons {
+  max-width: 112px;
+  height: 43px;
+  display: block;
+  margin: 20px auto auto auto;
+  font-size: 16px;
+  background: linear-gradient(
+    30deg,
+    rgba(0, 0, 255, 0.5) 30%,
+    rgba(22, 22, 3, 0.6) 50%,
+    rgba(0, 0, 255, 0.5) 70%
+  );
+  color: rgb(235, 223, 223);
+  border-radius: 10px;
+}
+
+.questionContainer {
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.message-container {
+  color: red;
+}
