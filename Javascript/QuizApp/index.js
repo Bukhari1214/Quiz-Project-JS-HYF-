@@ -1,45 +1,36 @@
-const quizQuestionArray = [
-  {
-    id: 1,
-    question: "What is the capital of Denmark?",
-    options: [
-      { text: "Berlin", isCorrect: false },
-      { text: "Copenhagen", isCorrect: true },
-      { text: "Madrid", isCorrect: false },
-      { text: "Rome", isCorrect: false },
-    ],
-    explanation: "The correct answer is Copenhagen",
-  },
-];
-
-const formInput = document.querySelector("#question-input-form");
+const formInput = document.querySelector(".question-input-form");
 const messageContainer = document.createElement("div");
-const buttonDiv = document.querySelector(".btn-div");
-const answersContainer = document.querySelector("#answers-container");
+messageContainer.setAttribute("class", "message-container");
+
+const buttonDiv = document.querySelector(".btn-wrapper");
+const answersContainer = document.querySelector(".answers-container");
+
 let addMoreButtonCreated = false;
 let createQuizButtonCreated = false;
 let shuffleButtonCreated = false;
 
+const questionInputCheck = document.getElementById("question");
+const maxLengthOfInput = questionInputCheck.maxLength;
+question.addEventListener("input", (event) => {
+  const currentLength = event.target.value.length;
+
+  if (currentLength >= maxLengthOfInput) {
+    messageContainer.innerText =
+      "ERROR: Question cannot be more than 140 characters!. Our app save only the  Questions consisting of 140 Character";
+    document.body.appendChild(messageContainer);
+  }
+});
 formInput.addEventListener("submit", (event) => {
   event.preventDefault();
 
-  const questionInput = document.querySelector("#question").value;
-  const option1Input = document.querySelector("#option1").value;
-  const option2Input = document.querySelector("#option2").value;
-  const option3Input = document.querySelector("#option3").value;
-  const option4Input = document.querySelector("#option4").value;
+  const questionInput = document.getElementById("question").value;
+  const option1Input = document.getElementById("option1").value;
+  const option2Input = document.getElementById("option2").value;
+  const option3Input = document.getElementById("option3").value;
+  const option4Input = document.getElementById("option4").value;
   const correctAnswerInput = document.querySelector(
     'input[name="correct-answer"]:checked'
   )?.value;
-
-  messageContainer.innerText = "";
-
-  if (questionInput.length > 140) {
-    messageContainer.innerText =
-      "ERROR: Question cannot be more than 140 characters!";
-    document.body.appendChild(messageContainer);
-    return;
-  }
 
   const questionExists = quizQuestionArray.some(
     (item) => item.question.toLowerCase() === questionInput.toLowerCase()
@@ -94,7 +85,7 @@ formInput.addEventListener("submit", (event) => {
   if (!addMoreButtonCreated) {
     const addMoreButton = document.createElement("button");
     addMoreButton.innerText = "Add More Questions";
-    addMoreButton.classList.add("btn-style");
+    addMoreButton.classList.add("control-buttons");
     buttonDiv.appendChild(addMoreButton);
     addMoreButton.addEventListener("click", () => {
       formInput.reset();
@@ -104,11 +95,11 @@ formInput.addEventListener("submit", (event) => {
     addMoreButtonCreated = true;
   }
 
-  if (quizQuestionArray.length >= 2 && !createQuizButtonCreated) {
+  if (quizQuestionArray.length > 20 && !createQuizButtonCreated) {
     //we can chnge this number after . . . i set it to lowest to see the flow
     const createQuizButton = document.createElement("button");
     createQuizButton.innerText = "Create a Quiz";
-    createQuizButton.classList.add("btn-style");
+    createQuizButton.classList.add("control-buttons");
     buttonDiv.appendChild(createQuizButton);
 
     createQuizButton.addEventListener("click", () => {
@@ -144,25 +135,13 @@ formInput.addEventListener("submit", (event) => {
 
     createQuizButtonCreated = true;
   }
-
-  if (!shuffleButtonCreated) {
-    const shuffleButton = document.createElement("button");
-    shuffleButton.innerText = "Shuffle Answers";
-    shuffleButton.classList.add("btn-style");
-    shuffleButton.type = "button";
-    buttonDiv.appendChild(shuffleButton);
-    shuffleButton.addEventListener("click", shuffleAnswers);
-
-    shuffleButtonCreated = true;
-  }
-  formInput.reset();
 });
 
 function shuffleAnswers() {
-  const option1Input = document.querySelector("#option1");
-  const option2Input = document.querySelector("#option2");
-  const option3Input = document.querySelector("#option3");
-  const option4Input = document.querySelector("#option4");
+  const option1Input = document.getElementById("option1");
+  const option2Input = document.getElementById("option2");
+  const option3Input = document.getElementById("option3");
+  const option4Input = document.getElementById("option4");
 
   const label1 = document.querySelector('label[for="option1"]');
   const label2 = document.querySelector('label[for="option2"]');
@@ -201,7 +180,7 @@ function shuffleAnswers() {
 if (!shuffleButtonCreated) {
   const shuffleButton = document.createElement("button");
   shuffleButton.innerText = "Shuffle Answers";
-  shuffleButton.classList.add("btn-style");
+  shuffleButton.classList.add("control-buttons");
   shuffleButton.type = "button";
   buttonDiv.appendChild(shuffleButton);
   shuffleButton.addEventListener("click", shuffleAnswers);

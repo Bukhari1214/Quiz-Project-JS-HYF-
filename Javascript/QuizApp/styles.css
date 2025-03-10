@@ -4,37 +4,26 @@
   box-sizing: border-box;
 }
 body {
-  font-family: Arial, sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 90%;
-  max-width: 950px;
-  background-color: #f0f0f0;
-  color: rgb(235, 223, 223);
-  font-size: 1em;
-  margin: auto;
-}
-
-body::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-image: url("/images/background.jpg");
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+  text-align: center;
+  font-family: system-ui, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  background-image: url("/images/background.webp");
   background-size: cover;
-  background-repeat: no-repeat;
   background-position: center;
-  opacity: 0.8;
-  z-index: -1;
+  color: rgb(247, 244, 244);
+  margin: 0;
+  padding: 0;
 }
-
-.introduction {
-  margin: auto;
+header {
+  width: 80%;
   padding: 10px;
-  width: 90%;
   background: linear-gradient(
     30deg,
     rgba(0, 0, 255, 0.5) 30%,
@@ -45,43 +34,61 @@ body::before {
   justify-content: space-around;
   border-radius: 10px 3px 10px 3px;
 }
-#question-input-form {
-  width: 60%;
+
+.question-input-form {
+  width: 80%;
   display: flex;
   flex-direction: column;
+  align-items: flex-start; /* Aligns items to the left */
 }
 
-#answers-container label {
+.question-input-form label {
   font-weight: bold;
-  margin-top: 10px;
-  display: block; /* Ensures that the label behaves as a block element */
 }
 
-#question-input-form input[type="text"] {
+.question-input-form input[type="text"] {
   margin-bottom: 5px;
   padding: 5px;
   border: 1px solid #796d6d;
   border-radius: 5px;
-  width: 100%;
+  width: 100%; /* Ensures input takes full width of the container */
   font-size: 14px;
-  background-color: antiquewhite;
+  background-color: lightcyan;
+  color: black;
 }
 
-#question-input-form legend {
-  font-weight: bold;
-
-  padding: 5px;
+.question-input-form input[type="text"]::placeholder {
+  font-style: italic;
+  color: brown;
 }
 
-.btn-div {
+.answers-container {
+  text-align: left;
+  display: block; /* Ensure each label occupies its own line */
+}
+
+.select-correct-answer {
   display: flex;
-  gap: 5px;
+  width: 100%;
   align-items: center;
+  justify-content: center;
 }
 
-.btn-style {
+.btn-wrapper {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
+.btn-wrapper button:hover {
+  transform: scale(1.1);
+  border-color: aquamarine;
+  color: aquamarine;
+}
+
+.control-buttons {
   max-width: 112px;
-  max-height: 43px;
+  height: 43px;
   display: block;
   margin: 20px auto auto auto;
   font-size: 16px;
@@ -98,5 +105,8 @@ body::before {
 .questionContainer {
   font-weight: bold;
   margin-top: 10px;
-  display: block;
+}
+
+.message-container {
+  color: red;
 }
