@@ -1,14 +1,171 @@
+function highligtAnswerInputs(userSelectedAnswer) {
+  console.log(userSelectedAnswer);
+  const allOptions = document.querySelectorAll('input[name="answer"]');
+  allOptions.forEach((option) => {
+    option.style.backgroundColor = "";
+  });
+  const correctOption = document.querySelector(`#${userSelectedAnswer}`);
+  if (correctOption) {
+    correctOption.style.backgroundColor = "green";
+    correctOption.style.color = "white";
+    correctOption.style.fontWeight = "bold";
+    correctOption.style.textTransform = "uppercase";
+  }
+  allOptions.forEach((input) => {
+    if (input !== correctOption) {
+      input.style.backgroundColor = "red";
+      input.style.color = "white";
+      input.style.fontWeight = "bold";
+      input.style.textTransform = "uppercase";
+    }
+  });
+}
+
+function removeHighLightners() {
+  const allOptions = document.querySelectorAll('input[name="answer"]');
+  allOptions.forEach((input) => {
+    input.style.backgroundColor = "";
+    input.style.color = ""; // Reset text color
+    input.style.fontWeight = "";
+    input.style.textTransform = "";
+    input.style.border = "";
+  });
+}
+
+function shuffleAnswers() {
+  const option1Input = document.getElementById("option1");
+  const option2Input = document.getElementById("option2");
+  const option3Input = document.getElementById("option3");
+  const option4Input = document.getElementById("option4");
+
+  const label1 = document.querySelector('label[for="option1"]');
+  const label2 = document.querySelector('label[for="option2"]');
+  const label3 = document.querySelector('label[for="option3"]');
+  const label4 = document.querySelector('label[for="option4"]');
+
+  console.log(option1Input);
+
+  if (
+    !option1Input.value ||
+    !option2Input.value ||
+    !option3Input.value ||
+    !option4Input.value
+  ) {
+    messageContainer.innerText =
+      "ERROR: All options must be filled before shuffling!";
+    return;
+  }
+
+  const optionsArray = [
+    { label: label1, input: option1Input },
+    { label: label2, input: option2Input },
+    { label: label3, input: option3Input },
+    { label: label4, input: option4Input },
+  ];
+
+  optionsArray.sort(() => Math.random() - 0.5);
+
+  answersContainer.innerHTML = ""; // Clear existing options
+  optionsArray.forEach((item) => {
+    answersContainer.appendChild(item.label); // Append the label
+    answersContainer.appendChild(item.input); // Append the input element itself
+  });
+
+  messageContainer.innerHTML = ""; // Clear error message
+}
+
+function quizListDisplay() {
+  messageContainer.innerText = "";
+
+  const existingQuizContainer = document.querySelector(".questionContainer");
+  if (existingQuizContainer) {
+    existingQuizContainer.remove();
+  }
+
+  const quizQuestionsListDiv = document.createElement("div");
+  quizQuestionsListDiv.classList.add("questionContainer");
+  const quizListHeadingDiv = document.createElement("div");
+  quizListHeadingDiv.classList.add("quizListHeadingDiv");
+  const quizListHeading = document.createElement("h1");
+  quizListHeading.innerText = "All Possible QUIZ Questions";
+  quizListHeadingDiv.appendChild(quizListHeading);
+  quizQuestionsListDiv.appendChild(quizListHeadingDiv);
+  document.body.appendChild(quizQuestionsListDiv);
+
+  const shuffledQuestionArray = quizQuestionArray.sort(
+    () => Math.random() - 0.5
+  );
+  const quizQuestionsToBeListed = shuffledQuestionArray.slice(0, 5);
+
+  quizQuestionsToBeListed.forEach((quiz, index) => {
+    const questionDiv = document.createElement("div");
+    questionDiv.classList.add("list-quiz-question");
+    questionDiv.innerHTML = `
+      <strong>Question # ${index + 1}: </strong> <em>${quiz.question}</em>
+    `;
+    const ul = document.createElement("ul");
+    ul.innerHTML = "<strong>Your Options Are:</strong>";
+
+    quiz.options.forEach((option) => {
+      const li = document.createElement("li");
+      li.innerText = option.text;
+      ul.appendChild(li);
+    });
+
+    questionDiv.appendChild(ul);
+
+    const answerRevealButton = document.createElement("button");
+    answerRevealButton.classList.add("list-button");
+    answerRevealButton.innerText = "Click To See Correct Answer";
+    questionDiv.appendChild(answerRevealButton);
+
+    answerRevealButton.addEventListener("click", () => {
+      const existingAnswer = questionDiv.querySelector(".correct-answer");
+      if (!existingAnswer) {
+        const correctAnswerOfQuestion = document.createElement("p");
+        correctAnswerOfQuestion.classList.add("correct-answer");
+        correctAnswerOfQuestion.innerText = `The Correct Answer Is: ${quiz.explanation}`;
+        questionDiv.appendChild(correctAnswerOfQuestion);
+      }
+    });
+
+    quizQuestionsListDiv.appendChild(questionDiv);
+  });
+  removeHighLightners();
+}
+
+function searchInQuestions() {}
+
+let shuffleButtonCreated = false;
+let createQuizButtonCreated = false;
+
 const formInput = document.querySelector(".question-input-form");
 const messageContainer = document.createElement("div");
 messageContainer.setAttribute("class", "message-container");
-
-const buttonDiv = document.querySelector(".btn-wrapper");
+document.body.appendChild(messageContainer);
 const answersContainer = document.querySelector(".answers-container");
+const buttonDiv = document.querySelector(".btn-wrapper");
 
-let addMoreButtonCreated = false;
-let createQuizButtonCreated = false;
-let shuffleButtonCreated = false;
+//Add More Button Created
+const addMoreButton = document.createElement("button");
+addMoreButton.innerText = "Add More Questions";
+addMoreButton.classList.add("control-buttons");
+buttonDiv.appendChild(addMoreButton);
+addMoreButton.addEventListener("click", () => {
+  formInput.reset();
+  messageContainer.innerText = "";
+});
 
+//Shuffle Answers Button Created
+const shuffleButton = document.createElement("button");
+shuffleButton.innerText = "Shuffle Answers";
+shuffleButton.classList.add("control-buttons");
+shuffleButton.type = "button";
+buttonDiv.appendChild(shuffleButton);
+shuffleButton.addEventListener("click", shuffleAnswers);
+shuffleButtonCreated = true;
+
+//Input Check Applied to check its length
 const questionInputCheck = document.getElementById("question");
 const maxLengthOfInput = questionInputCheck.maxLength;
 question.addEventListener("input", (event) => {
@@ -16,10 +173,24 @@ question.addEventListener("input", (event) => {
 
   if (currentLength >= maxLengthOfInput) {
     messageContainer.innerText =
-      "ERROR: Question cannot be more than 140 characters!. Our app save only the  Questions consisting of 140 Character";
-    document.body.appendChild(messageContainer);
+      "ERROR: Question cannot be more than 140 characters!\nThis app saves only first 140 characters of input question.";
   }
 });
+
+//Colouring the Input Answers Green for Right and Red for Wrong
+const radioButtons = document.querySelectorAll(
+  'input[type="radio"][name="correct-answer"]'
+);
+let correctAnswerInput;
+radioButtons.forEach((radioButton) => {
+  radioButton.addEventListener("change", () => {
+    correctAnswerInput = document.querySelector(
+      'input[name="correct-answer"]:checked'
+    )?.value;
+    highligtAnswerInputs(correctAnswerInput);
+  });
+});
+
 formInput.addEventListener("submit", (event) => {
   event.preventDefault();
 
@@ -28,10 +199,6 @@ formInput.addEventListener("submit", (event) => {
   const option2Input = document.getElementById("option2").value;
   const option3Input = document.getElementById("option3").value;
   const option4Input = document.getElementById("option4").value;
-  const correctAnswerInput = document.querySelector(
-    'input[name="correct-answer"]:checked'
-  )?.value;
-
   const questionExists = quizQuestionArray.some(
     (item) => item.question.toLowerCase() === questionInput.toLowerCase()
   );
@@ -47,12 +214,10 @@ formInput.addEventListener("submit", (event) => {
     optionsDuplicationCheck.length !== new Set(optionsDuplicationCheck).size;
 
   if (duplicateOption) {
-    messageContainer.innerText = "ERROR: Duplicate options found!";
-    document.body.appendChild(messageContainer);
+    messageContainer.innerText = "ERROR: Duplicate Answers Found!";
   } else {
     if (questionExists) {
       messageContainer.innerText = "Repetition ERROR: Question Already Exists";
-      document.body.appendChild(messageContainer);
     } else {
       const options = [
         { text: option1Input, isCorrect: correctAnswerInput === "option1" },
@@ -71,119 +236,24 @@ formInput.addEventListener("submit", (event) => {
         options: options,
         explanation: `The correct answer is ${correctAnswerText}.`,
       };
+
       quizQuestionArray.push(quizQuestion);
 
-      messageContainer.innerText = `New question, possible options and correct option INSERTED with ID: ${
+      messageContainer.innerText = `New question with possible options and correct option INSERTED with ID: ${
         quizQuestionArray[quizQuestionArray.length - 1].id
       }`;
-      document.body.appendChild(messageContainer);
     }
   }
 
-  console.log(quizQuestionArray);
-
-  if (!addMoreButtonCreated) {
-    const addMoreButton = document.createElement("button");
-    addMoreButton.innerText = "Add More Questions";
-    addMoreButton.classList.add("control-buttons");
-    buttonDiv.appendChild(addMoreButton);
-    addMoreButton.addEventListener("click", () => {
-      formInput.reset();
-      messageContainer.innerText = "";
-    });
-
-    addMoreButtonCreated = true;
-  }
-
-  if (quizQuestionArray.length > 20 && !createQuizButtonCreated) {
-    //we can chnge this number after . . . i set it to lowest to see the flow
+  if (quizQuestionArray.length > 15 && !createQuizButtonCreated) {
     const createQuizButton = document.createElement("button");
     createQuizButton.innerText = "Create a Quiz";
     createQuizButton.classList.add("control-buttons");
+    createQuizButton.type = "button";
     buttonDiv.appendChild(createQuizButton);
 
-    createQuizButton.addEventListener("click", () => {
-      alert("Quiz Created!");
-      messageContainer.innerText = "";
-      // const newQuizMainDiv = document.createElement("div");
-      // newQuizMainDiv.classList.add("questionContainer");
-      // const newQuizHeadingDiv = document.createElement("div");
-      // newQuizHeadingDiv.classList.add("introduction");
-      // newQuizMainDiv.appendChild(newQuizHeadingDiv);
-      // const newQuizHeading = document.createElement("h1");
-      // newQuizHeading.innerText = "QUIZ";
-      // newQuizHeadingDiv.appendChild(newQuizHeading);
-
-      // const selectedQuestions = [];
-      // while (selectedQuestions.length < 5) {
-      //   const randomIndex = Math.floor(
-      //     Math.random() * quizQuestionArray.length
-      //   );
-      //   const question = quizQuestionArray[randomIndex];
-      //   if (!selectedQuestions.includes(question)) {
-      //     selectedQuestions.push(question);
-      //   }
-      // }
-
-      /*  Above code i will work in WEEK 2 to add following features
-          1.  color the input for the "correct" answer option in green and the "wrong" ones in red. Make sure it's still readable.
-          2.  show a list of all quiz questions added to the array below the form. It should show the questions, the 4 options but
-              not which one is correct. Add a button with the functionality to reveal which is the correct answer for each question.
-          3.  build a function to filter the questions by searching the content of the question.
-      */
-    });
-
+    createQuizButton.addEventListener("click", quizListDisplay);
     createQuizButtonCreated = true;
   }
+  removeHighLightners();
 });
-
-function shuffleAnswers() {
-  const option1Input = document.getElementById("option1");
-  const option2Input = document.getElementById("option2");
-  const option3Input = document.getElementById("option3");
-  const option4Input = document.getElementById("option4");
-
-  const label1 = document.querySelector('label[for="option1"]');
-  const label2 = document.querySelector('label[for="option2"]');
-  const label3 = document.querySelector('label[for="option3"]');
-  const label4 = document.querySelector('label[for="option4"]');
-
-  if (
-    !option1Input.value ||
-    !option2Input.value ||
-    !option3Input.value ||
-    !option4Input.value
-  ) {
-    messageContainer.innerText =
-      "ERROR: All options must be filled before shuffling!";
-    document.body.appendChild(messageContainer);
-    return;
-  }
-
-  const optionsArray = [
-    { label: label1, input: option1Input },
-    { label: label2, input: option2Input },
-    { label: label3, input: option3Input },
-    { label: label4, input: option4Input },
-  ];
-
-  optionsArray.sort(() => Math.random() - 0.5);
-
-  answersContainer.innerHTML = "";
-  optionsArray.forEach((item) => {
-    answersContainer.appendChild(item.label);
-    answersContainer.appendChild(item.input);
-  });
-  messageContainer.innerHTML = "";
-}
-
-if (!shuffleButtonCreated) {
-  const shuffleButton = document.createElement("button");
-  shuffleButton.innerText = "Shuffle Answers";
-  shuffleButton.classList.add("control-buttons");
-  shuffleButton.type = "button";
-  buttonDiv.appendChild(shuffleButton);
-  shuffleButton.addEventListener("click", shuffleAnswers);
-
-  shuffleButtonCreated = true;
-}
