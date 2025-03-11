@@ -1,31 +1,46 @@
 function highligtAnswerInputs(userSelectedAnswer) {
-  console.log(userSelectedAnswer);
-  const allOptions = document.querySelectorAll('input[name="answer"]');
-  allOptions.forEach((option) => {
-    option.style.backgroundColor = "";
-  });
-  const correctOption = document.querySelector(`#${userSelectedAnswer}`);
-  if (correctOption) {
-    correctOption.style.backgroundColor = "green";
-    correctOption.style.color = "white";
-    correctOption.style.fontWeight = "bold";
-    correctOption.style.textTransform = "uppercase";
-  }
-  allOptions.forEach((input) => {
-    if (input !== correctOption) {
-      input.style.backgroundColor = "red";
-      input.style.color = "white";
-      input.style.fontWeight = "bold";
-      input.style.textTransform = "uppercase";
+  const option1Input = document.getElementById("option1");
+  const option2Input = document.getElementById("option2");
+  const option3Input = document.getElementById("option3");
+  const option4Input = document.getElementById("option4");
+  messageContainer.innerText = "";
+  if (
+    !option1Input.value ||
+    !option2Input.value ||
+    !option3Input.value ||
+    !option4Input.value
+  ) {
+    messageContainer.innerText =
+      "ERROR: All options must be filled before putting Highlighter!";
+    return;
+  } else {
+    const allOptions = document.querySelectorAll('input[name="answer"]');
+    allOptions.forEach((option) => {
+      option.style.backgroundColor = "";
+    });
+    const correctOption = document.querySelector(`#${userSelectedAnswer}`);
+    if (correctOption) {
+      correctOption.style.backgroundColor = "green";
+      correctOption.style.color = "white";
+      correctOption.style.fontWeight = "bold";
+      correctOption.style.textTransform = "uppercase";
     }
-  });
+    allOptions.forEach((input) => {
+      if (input !== correctOption) {
+        input.style.backgroundColor = "red";
+        input.style.color = "white";
+        input.style.fontWeight = "bold";
+        input.style.textTransform = "uppercase";
+      }
+    });
+  }
 }
 
 function removeHighLightners() {
   const allOptions = document.querySelectorAll('input[name="answer"]');
   allOptions.forEach((input) => {
     input.style.backgroundColor = "";
-    input.style.color = ""; // Reset text color
+    input.style.color = "";
     input.style.fontWeight = "";
     input.style.textTransform = "";
     input.style.border = "";
@@ -33,6 +48,16 @@ function removeHighLightners() {
 }
 
 function shuffleAnswers() {
+  const existingQuizContainer = document.querySelector(".questionContainer");
+  if (existingQuizContainer) {
+    existingQuizContainer.remove();
+  }
+
+  const existingSearchContainer = document.querySelector(".searchContainerDiv");
+  if (existingSearchContainer) {
+    existingSearchContainer.remove();
+  }
+
   const option1Input = document.getElementById("option1");
   const option2Input = document.getElementById("option2");
   const option3Input = document.getElementById("option3");
@@ -42,8 +67,6 @@ function shuffleAnswers() {
   const label2 = document.querySelector('label[for="option2"]');
   const label3 = document.querySelector('label[for="option3"]');
   const label4 = document.querySelector('label[for="option4"]');
-
-  console.log(option1Input);
 
   if (
     !option1Input.value ||
@@ -65,13 +88,13 @@ function shuffleAnswers() {
 
   optionsArray.sort(() => Math.random() - 0.5);
 
-  answersContainer.innerHTML = ""; // Clear existing options
+  answersContainer.innerHTML = "";
   optionsArray.forEach((item) => {
-    answersContainer.appendChild(item.label); // Append the label
-    answersContainer.appendChild(item.input); // Append the input element itself
+    answersContainer.appendChild(item.label);
+    answersContainer.appendChild(item.input);
   });
-
-  messageContainer.innerHTML = ""; // Clear error message
+  removeHighLightners();
+  messageContainer.innerHTML = "";
 }
 
 function quizListDisplay() {
@@ -80,6 +103,11 @@ function quizListDisplay() {
   const existingQuizContainer = document.querySelector(".questionContainer");
   if (existingQuizContainer) {
     existingQuizContainer.remove();
+  }
+
+  const existingSearchContainer = document.querySelector(".searchContainerDiv");
+  if (existingSearchContainer) {
+    existingSearchContainer.remove();
   }
 
   const quizQuestionsListDiv = document.createElement("div");
@@ -124,7 +152,7 @@ function quizListDisplay() {
       if (!existingAnswer) {
         const correctAnswerOfQuestion = document.createElement("p");
         correctAnswerOfQuestion.classList.add("correct-answer");
-        correctAnswerOfQuestion.innerText = `The Correct Answer Is: ${quiz.explanation}`;
+        correctAnswerOfQuestion.innerText = `${quiz.explanation}`;
         questionDiv.appendChild(correctAnswerOfQuestion);
       }
     });
@@ -134,10 +162,109 @@ function quizListDisplay() {
   removeHighLightners();
 }
 
-function searchInQuestions() {}
+function addMoreQuestions() {
+  const existingQuizContainer = document.querySelector(".questionContainer");
+  if (existingQuizContainer) {
+    existingQuizContainer.remove();
+  }
+
+  const existingSearchContainer = document.querySelector(".searchContainerDiv");
+  if (existingSearchContainer) {
+    existingSearchContainer.remove();
+  }
+  formInput.reset();
+  removeHighLightners();
+  messageContainer.innerText = "";
+}
+
+function searchInQuestions() {
+  const existingQuizContainer = document.querySelector(".questionContainer");
+  if (existingQuizContainer) {
+    existingQuizContainer.remove();
+  }
+
+  const existingSearchContainer = document.querySelector(".searchContainerDiv");
+  if (existingSearchContainer) {
+    existingSearchContainer.remove();
+  }
+
+  const searchAreaMainDiv = document.createElement("div");
+  searchAreaMainDiv.classList.add("searchContainerDiv");
+
+  const searchAreaHeadingDiv = document.createElement("div");
+  searchAreaHeadingDiv.classList.add("searchHeadingDiv");
+  const searchAreaHeading = document.createElement("h1");
+  searchAreaHeading.innerText = "You Can Search The Questions";
+  searchAreaHeadingDiv.appendChild(searchAreaHeading);
+  searchAreaMainDiv.appendChild(searchAreaHeadingDiv);
+  document.body.appendChild(searchAreaMainDiv);
+
+  const searchAreaInputDiv = document.createElement("div");
+  searchAreaInputDiv.classList.add("search-input");
+  const searchLabel = document.createElement("label");
+  searchLabel.innerText = "Enter Your Text Here";
+
+  const searchInput = document.createElement("input");
+  searchInput.setAttribute("id", "searchInput");
+  searchInput.setAttribute("type", "text");
+  searchInput.setAttribute("placeholder", "Search...");
+  searchInput.setAttribute("required", "true");
+
+  searchAreaInputDiv.appendChild(searchLabel);
+  searchAreaInputDiv.appendChild(searchInput);
+  searchAreaMainDiv.appendChild(searchAreaInputDiv);
+
+  const searchResultsDiv = document.createElement("div");
+  searchResultsDiv.classList.add("search-Results-Div");
+  searchAreaMainDiv.appendChild(searchResultsDiv);
+
+  searchInput.addEventListener("input", () => {
+    const searchInputFromUser = searchInput.value.toLowerCase();
+    searchResultsDiv.innerHTML = "";
+
+    if (searchInputFromUser.trim() === "") {
+      return;
+    }
+
+    const filteredQuestionsToDisplay = quizQuestionArray.filter(
+      (quizQuestionArrayData) => {
+        return quizQuestionArrayData.question
+          .toLowerCase()
+          .includes(searchInputFromUser);
+      }
+    );
+
+    if (filteredQuestionsToDisplay.length === 0) {
+      const noResultsMessage = document.createElement("p");
+      noResultsMessage.innerText = "No questions match your search!";
+      searchResultsDiv.appendChild(noResultsMessage);
+    } else {
+      filteredQuestionsToDisplay.forEach((question, index) => {
+        const searchQuestionDiv = document.createElement("div");
+        searchQuestionDiv.classList.add("searchedQuestion");
+        searchQuestionDiv.innerHTML = `<strong>Question # ${
+          index + 1
+        }: </strong> <em>${question.question}</em>`;
+
+        searchResultsDiv.appendChild(searchQuestionDiv);
+
+        const ul = document.createElement("ul");
+        question.options.forEach((option) => {
+          const answerOption = document.createElement("li");
+          answerOption.innerText = option.text;
+          ul.appendChild(answerOption);
+        });
+        searchQuestionDiv.appendChild(ul);
+        const horizontalLine = document.createElement("hr");
+        searchQuestionDiv.appendChild(horizontalLine);
+      });
+    }
+  });
+}
 
 let shuffleButtonCreated = false;
 let createQuizButtonCreated = false;
+let searchButtonCreated = false;
 
 const formInput = document.querySelector(".question-input-form");
 const messageContainer = document.createElement("div");
@@ -151,10 +278,7 @@ const addMoreButton = document.createElement("button");
 addMoreButton.innerText = "Add More Questions";
 addMoreButton.classList.add("control-buttons");
 buttonDiv.appendChild(addMoreButton);
-addMoreButton.addEventListener("click", () => {
-  formInput.reset();
-  messageContainer.innerText = "";
-});
+addMoreButton.addEventListener("click", addMoreQuestions);
 
 //Shuffle Answers Button Created
 const shuffleButton = document.createElement("button");
@@ -165,12 +289,11 @@ buttonDiv.appendChild(shuffleButton);
 shuffleButton.addEventListener("click", shuffleAnswers);
 shuffleButtonCreated = true;
 
-//Input Check Applied to check its length
+//Input Check Applied to check length of Question
 const questionInputCheck = document.getElementById("question");
 const maxLengthOfInput = questionInputCheck.maxLength;
 question.addEventListener("input", (event) => {
   const currentLength = event.target.value.length;
-
   if (currentLength >= maxLengthOfInput) {
     messageContainer.innerText =
       "ERROR: Question cannot be more than 140 characters!\nThis app saves only first 140 characters of input question.";
@@ -191,7 +314,28 @@ radioButtons.forEach((radioButton) => {
   });
 });
 
+// New Button for Search Bar
+
+const searchButton = document.createElement("button");
+searchButton.innerText = "Search Questions";
+searchButton.classList.add("control-buttons");
+searchButton.type = "button";
+buttonDiv.appendChild(searchButton);
+searchButton.addEventListener("click", searchInQuestions);
+searchButtonCreated = true;
+
+// Submitt Input Form Event Handler
+
 formInput.addEventListener("submit", (event) => {
+  const existingQuizContainer = document.querySelector(".questionContainer");
+  if (existingQuizContainer) {
+    existingQuizContainer.remove();
+  }
+
+  const existingSearchContainer = document.querySelector(".searchContainerDiv");
+  if (existingSearchContainer) {
+    existingSearchContainer.remove();
+  }
   event.preventDefault();
 
   const questionInput = document.getElementById("question").value;
@@ -245,7 +389,9 @@ formInput.addEventListener("submit", (event) => {
     }
   }
 
-  if (quizQuestionArray.length > 15 && !createQuizButtonCreated) {
+  // Create Quiz Button appears after a check
+
+  if (quizQuestionArray.length > 16 && !createQuizButtonCreated) {
     const createQuizButton = document.createElement("button");
     createQuizButton.innerText = "Create a Quiz";
     createQuizButton.classList.add("control-buttons");

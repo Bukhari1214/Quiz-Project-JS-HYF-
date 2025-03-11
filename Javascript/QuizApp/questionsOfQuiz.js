@@ -164,15 +164,4 @@ const quizQuestionArray = [
     ],
     explanation: "The Correct Answer Is: 299,792 km/s",
   },
-  {
-    id: 16,
-    question: "What is the capital of Denmark?",
-    options: [
-      { text: "Berlin", isCorrect: false },
-      { text: "Copenhagen", isCorrect: true },
-      { text: "Madrid", isCorrect: false },
-      { text: "Rome", isCorrect: false },
-    ],
-    explanation: "The correct answer is Copenhagen",
-  },
 ];
