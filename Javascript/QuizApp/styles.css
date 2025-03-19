@@ -10,7 +10,7 @@ body {
   align-items: center;
   width: 100%;
   height: 100vh;
-  background-image: url("/images/background.webp");
+  background-image: url("./images/background.webp");
   background-size: cover;
   background-position: center;
   color: rgb(247, 244, 244);
@@ -87,7 +87,7 @@ header {
 }
 
 .control-buttons {
-  max-width: 112px;
+  width: 112px;
   height: 43px;
   margin-top: 20px;
   font-size: 16px;
@@ -209,4 +209,58 @@ hr {
   color: rgb(21, 9, 73);
   letter-spacing: 2px;
   padding: 5px;
+}
+
+.competition-div {
+  font-weight: bold;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  padding: 10px;
+  text-align: left;
+  align-items: center;
+}
+
+.competition-div input[type="text"] {
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid #6d7972;
+  border-radius: 5px;
+  width: 70%;
+  font-size: 14px;
+  background-color: lightcyan;
+}
+
+.player-1-div,
+.player-2-div {
+  font-weight: bold;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 10px;
+  text-align: left;
+  align-items: center;
+}
+
+.competition-sub-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  font-style: italic;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  color: rgba(136, 240, 151);
+}
+
+.winner-message {
+  width: 80%;
+  border-style: double;
+  border-color: #007bff;
+  font-style: italic;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #00ff57;
+  background-color: black;
+  text-align: center;
 }
