@@ -10,7 +10,8 @@ body {
   align-items: center;
   width: 100%;
   height: 100vh;
-  background-image: url("/images/background.webp");
+  background-image: url("./images/background.webp");
+  background-color: #848a87;
   background-size: cover;
   background-position: center;
   color: rgb(247, 244, 244);
@@ -42,6 +43,8 @@ header {
 }
 
 .question-input-form label {
+  margin-top: 10px;
+  margin-bottom: 10;
   font-weight: bold;
 }
 
@@ -74,6 +77,11 @@ header {
   width: 100%;
 }
 
+.select-correct-answer label {
+  margin-left: 20px;
+  width: 80%;
+}
+
 .btn-wrapper {
   display: flex;
   justify-content: space-around;
@@ -87,7 +95,8 @@ header {
 }
 
 .control-buttons {
-  max-width: 112px;
+  width: 100%;
+  max-width: 150px;
   height: 43px;
   margin-top: 20px;
   font-size: 16px;
@@ -209,4 +218,111 @@ hr {
   color: rgb(21, 9, 73);
   letter-spacing: 2px;
   padding: 5px;
+}
+
+.competition-div {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  padding: 10px;
+  text-align: left;
+  align-items: flex-start; /* Change to align items to the left */
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.competition-div input[type="text"] {
+  margin-bottom: 5px;
+  padding: 5px;
+  border: 1px solid #6d7972;
+  border-radius: 5px;
+  width: 70%;
+  font-size: 14px;
+  background-color: lightcyan;
+}
+
+.competition-div label {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.player-1-div,
+.player-2-div {
+  font-weight: bold;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 10px;
+  text-align: left;
+  align-items: center;
+}
+
+.competition-sub-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  font-style: italic;
+  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+  color: rgba(136, 240, 151);
+}
+
+.winner-message {
+  width: 80%;
+  border-style: double;
+  border-color: #007bff;
+  font-style: italic;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  color: #00ff57;
+  background-color: black;
+  text-align: center;
+}
+
+.error-message {
+  font-size: 18px;
+  margin-top: 20px;
+  color: orangered;
+}
+.normal-message {
+  font-size: 18px;
+  margin-top: 15px;
+  color: lightgreen;
+}
+.correct-answer {
+  background-color: green !important;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.wrong-answer {
+  background-color: red !important;
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.active-turn {
+  width: 100%;
+  max-width: 150px;
+  height: 43px;
+  margin-top: 20px;
+  font-size: 16px;
+  background: linear-gradient(
+    30deg,
+    rgba(0, 0, 255, 0.5) 30%,
+    rgba(22, 22, 3, 0.6) 50%,
+    rgba(0, 0, 255, 0.5) 70%
+  );
+  color: rgb(235, 223, 223);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.inactive-turn {
+  background-color: #f1f1f1;
+  color: gray;
+  cursor: not-allowed;
 }

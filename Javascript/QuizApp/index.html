@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>QuizApp@Wasim</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="/images/logo.png" type="image/png" />
   </head>
   <body>
     <header>
@@ -61,7 +62,7 @@
       <div class="select-correct-answer">
         <fieldset>
           <legend>Select the Correct Answer:</legend>
-          <label for="correct-answer1"># 1</label>
+          <label class="labels-input-radio" for="correct-answer1"># 1</label>
           <input
             type="radio"
             id="correct-answer1"
@@ -70,7 +71,7 @@
             required
           />
 
-          <label for="correct-answer2"># 2</label>
+          <label class="labels-input-radio" for="correct-answer2"># 2</label>
           <input
             type="radio"
             id="correct-answer2"
@@ -79,7 +80,7 @@
             required
           />
 
-          <label for="correct-answer3"># 3</label>
+          <label class="labels-input-radio" for="correct-answer3"># 3</label>
           <input
             type="radio"
             id="correct-answer3"
@@ -88,7 +89,7 @@
             required
           />
 
-          <label for="correct-answer4"># 4</label>
+          <label class="labels-input-radio" for="correct-answer4"># 4</label>
           <input
             type="radio"
             id="correct-answer4"
@@ -102,7 +103,7 @@
         <button type="submit" class="control-buttons">Submit Question</button>
       </div>
     </form>
-
+    <script src="features.js"></script>
     <script src="questionsOfQuiz.js"></script>
     <script src="index.js"></script>
   </body>
