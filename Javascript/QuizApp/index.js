@@ -3,7 +3,7 @@ let createQuizButtonCreated = false;
 let searchButtonCreated = false;
 
 const messageContainer = document.createElement("div");
-messageContainer.setAttribute("class", "message-container");
+messageContainer.classList.add("message-container");
 document.body.appendChild(messageContainer);
 
 //Add More Button Created
@@ -97,10 +97,12 @@ formInput.addEventListener("submit", (event) => {
     optionsDuplicationCheck.length !== new Set(optionsDuplicationCheck).size;
 
   if (duplicateOption) {
-    messageContainer.innerText = "ERROR: Duplicate Answers Found!";
+    errorOrNormalMessageContainer("ERROR: Duplicate Answers Found!");
   } else {
     if (questionExists) {
-      messageContainer.innerText = "Repetition ERROR: Question Already Exists";
+      errorOrNormalMessageContainer(
+        "Repetition ERROR: Question Already Exists!"
+      );
     } else {
       const options = [
         { text: option1Input, isCorrect: correctAnswerInput === "option1" },
@@ -122,9 +124,11 @@ formInput.addEventListener("submit", (event) => {
 
       quizQuestionArray.push(quizQuestion);
 
-      messageContainer.innerText = `New question with possible options and correct option INSERTED with ID: ${
-        quizQuestionArray[quizQuestionArray.length - 1].id
-      }`;
+      errorOrNormalMessageContainer(
+        `New question with possible options and correct option INSERTED with ID: ${
+          quizQuestionArray[quizQuestionArray.length - 1].id
+        }`
+      );
     }
   }
 

@@ -2,56 +2,8 @@ const formInput = document.querySelector(".question-input-form");
 const answersContainer = document.querySelector(".answers-container");
 const buttonDiv = document.querySelector(".btn-wrapper");
 
-function highligtAnswerInputs(userSelectedAnswer) {
-  const option1Input = document.getElementById("option1");
-  const option2Input = document.getElementById("option2");
-  const option3Input = document.getElementById("option3");
-  const option4Input = document.getElementById("option4");
-  messageContainer.innerText = "";
-  if (
-    !option1Input.value ||
-    !option2Input.value ||
-    !option3Input.value ||
-    !option4Input.value
-  ) {
-    messageContainer.innerText =
-      "ERROR: All options must be filled before putting Highlighter!";
-    return;
-  } else {
-    const allOptions = document.querySelectorAll('input[name="answer"]');
-    allOptions.forEach((option) => {
-      option.style.backgroundColor = "";
-    });
-    const correctOption = document.querySelector(`#${userSelectedAnswer}`);
-    if (correctOption) {
-      correctOption.style.backgroundColor = "green";
-      correctOption.style.color = "white";
-      correctOption.style.fontWeight = "bold";
-      correctOption.style.textTransform = "uppercase";
-    }
-    allOptions.forEach((input) => {
-      if (input !== correctOption) {
-        input.style.backgroundColor = "red";
-        input.style.color = "white";
-        input.style.fontWeight = "bold";
-        input.style.textTransform = "uppercase";
-      }
-    });
-  }
-}
-
-function removeHighLightners() {
-  const allOptions = document.querySelectorAll('input[name="answer"]');
-  allOptions.forEach((input) => {
-    input.style.backgroundColor = "";
-    input.style.color = "";
-    input.style.fontWeight = "";
-    input.style.textTransform = "";
-    input.style.border = "";
-  });
-}
-
-function shuffleAnswers() {
+//Function to remove Existing Conatiners from DOM To Show New Results or Output on Same Place
+function removeExistingContainers() {
   const existingQuizContainer = document.querySelector(".questionContainer");
   if (existingQuizContainer) {
     existingQuizContainer.remove();
@@ -67,7 +19,69 @@ function shuffleAnswers() {
   if (existingCompetitionContainer) {
     existingCompetitionContainer.remove();
   }
+}
 
+// Function To Control Color of Messages Shown in Message Container Div
+function errorOrNormalMessageContainer(text) {
+  messageContainer.classList.remove("error-message", "normal-message");
+
+  if (text.trim().toLowerCase().includes("error")) {
+    messageContainer.classList.add("error-message");
+  } else {
+    messageContainer.classList.add("normal-message");
+  }
+  messageContainer.innerText = text;
+}
+
+// Function To Control Colors of Input Fields after selection of Correct Answer
+function highligtAnswerInputs(userSelectedAnswer) {
+  const option1Input = document.getElementById("option1");
+  const option2Input = document.getElementById("option2");
+  const option3Input = document.getElementById("option3");
+  const option4Input = document.getElementById("option4");
+
+  if (
+    !option1Input.value ||
+    !option2Input.value ||
+    !option3Input.value ||
+    !option4Input.value
+  ) {
+    errorOrNormalMessageContainer(
+      "ERROR: All options must be filled before putting Highlighter!"
+    );
+    return;
+  }
+
+  const allOptions = document.querySelectorAll('input[name="answer"]');
+
+  allOptions.forEach((option) => {
+    option.classList.remove("correct-answer", "wrong-answer");
+  });
+
+  const correctOption = document.querySelector(`#${userSelectedAnswer}`);
+  if (correctOption) {
+    correctOption.classList.add("correct-answer");
+  }
+
+  allOptions.forEach((input) => {
+    if (input !== correctOption) {
+      input.classList.add("wrong-answer");
+    }
+  });
+}
+
+// Function To Remove Colors of Input Fields after selection of Correct Answer
+function removeHighLightners() {
+  const allOptions = document.querySelectorAll(
+    'input[type="text"][name="answer"]'
+  );
+  allOptions.forEach((input) => {
+    input.classList.remove("correct-answer", "wrong-answer");
+  });
+}
+
+function shuffleAnswers() {
+  removeExistingContainers();
   const option1Input = document.getElementById("option1");
   const option2Input = document.getElementById("option2");
   const option3Input = document.getElementById("option3");
@@ -84,8 +98,9 @@ function shuffleAnswers() {
     !option3Input.value ||
     !option4Input.value
   ) {
-    messageContainer.innerText =
-      "ERROR: All options must be filled before shuffling!";
+    errorOrNormalMessageContainer(
+      "ERROR: All options must be filled before shuffling!"
+    );
     return;
   }
 
@@ -103,35 +118,20 @@ function shuffleAnswers() {
     answersContainer.appendChild(item.label);
     answersContainer.appendChild(item.input);
   });
-  messageContainer.innerHTML = "";
+  errorOrNormalMessageContainer("");
 }
 
 function quizListDisplay() {
-  messageContainer.innerText = "";
+  errorOrNormalMessageContainer("");
   formInput.reset();
   removeHighLightners();
-
-  const existingQuizContainer = document.querySelector(".questionContainer");
-  if (existingQuizContainer) {
-    existingQuizContainer.remove();
-  }
-
-  const existingSearchContainer = document.querySelector(".searchContainerDiv");
-  if (existingSearchContainer) {
-    existingSearchContainer.remove();
-  }
-
-  const existingCompetitionContainer =
-    document.querySelector(".competition-div");
-  if (existingCompetitionContainer) {
-    existingCompetitionContainer.remove();
-  }
+  removeExistingContainers();
 
   const quizQuestionsListDiv = document.createElement("div");
   quizQuestionsListDiv.classList.add("questionContainer");
   const quizListHeadingDiv = document.createElement("div");
   quizListHeadingDiv.classList.add("quizListHeadingDiv");
-  const quizListHeading = document.createElement("h1");
+  const quizListHeading = document.createElement("h2");
   quizListHeading.innerText = "All Possible QUIZ Questions";
   quizListHeadingDiv.appendChild(quizListHeading);
   quizQuestionsListDiv.appendChild(quizListHeadingDiv);
@@ -180,45 +180,17 @@ function quizListDisplay() {
 }
 
 function addMoreQuestions() {
-  const existingQuizContainer = document.querySelector(".questionContainer");
-  if (existingQuizContainer) {
-    existingQuizContainer.remove();
-  }
-
-  const existingSearchContainer = document.querySelector(".searchContainerDiv");
-  if (existingSearchContainer) {
-    existingSearchContainer.remove();
-  }
-
-  const existingCompetitionContainer =
-    document.querySelector(".competition-div");
-  if (existingCompetitionContainer) {
-    existingCompetitionContainer.remove();
-  }
+  removeExistingContainers();
 
   formInput.reset();
   removeHighLightners();
-  messageContainer.innerText = "";
+  errorOrNormalMessageContainer("");
 }
 
 function searchInQuestions() {
-  const existingQuizContainer = document.querySelector(".questionContainer");
-  if (existingQuizContainer) {
-    existingQuizContainer.remove();
-  }
+  removeExistingContainers();
 
-  const existingSearchContainer = document.querySelector(".searchContainerDiv");
-  if (existingSearchContainer) {
-    existingSearchContainer.remove();
-  }
-
-  const existingCompetitionContainer =
-    document.querySelector(".competition-div");
-  if (existingCompetitionContainer) {
-    existingCompetitionContainer.remove();
-  }
-
-  messageContainer.innerText = "";
+  errorOrNormalMessageContainer("");
   removeHighLightners();
   formInput.reset();
 
@@ -227,7 +199,7 @@ function searchInQuestions() {
 
   const searchAreaHeadingDiv = document.createElement("div");
   searchAreaHeadingDiv.classList.add("searchHeadingDiv");
-  const searchAreaHeading = document.createElement("h1");
+  const searchAreaHeading = document.createElement("h2");
   searchAreaHeading.innerText = "You Can Search The Questions";
   searchAreaHeadingDiv.appendChild(searchAreaHeading);
   searchAreaMainDiv.appendChild(searchAreaHeadingDiv);
@@ -297,42 +269,40 @@ function searchInQuestions() {
 }
 
 function competition() {
-  messageContainer.innerText = "";
+  errorOrNormalMessageContainer("");
   formInput.reset();
   removeHighLightners();
+  removeExistingContainers();
   const winnerSound = new Audio("sounds/winsound.wav");
-  const existingCompetitionContainer =
-    document.querySelector(".competition-div");
-  if (existingCompetitionContainer) {
-    existingCompetitionContainer.remove();
-  }
-
-  const existingQuizContainer = document.querySelector(".questionContainer");
-  if (existingQuizContainer) {
-    existingQuizContainer.remove();
-  }
-
-  const existingSearchContainer = document.querySelector(".searchContainerDiv");
-  if (existingSearchContainer) {
-    existingSearchContainer.remove();
-  }
 
   const competitionDiv = document.createElement("div");
   competitionDiv.classList.add("competition-div");
   document.body.appendChild(competitionDiv);
 
+  const player1NameLabel = document.createElement("label");
+  player1NameLabel.innerText = "Enter Player 1 Name";
   const playerName1 = document.createElement("input");
-  playerName1.setAttribute("type", "text");
-  playerName1.setAttribute("id", "player1Name");
-  playerName1.setAttribute("placeholder", "Enter Player 1 Name");
-  playerName1.setAttribute("required", "true");
-  competitionDiv.appendChild(playerName1);
-
   const playerName2 = document.createElement("input");
-  playerName2.setAttribute("type", "text");
-  playerName2.setAttribute("id", "player2Name");
-  playerName2.setAttribute("placeholder", "Enter Player 2 Name");
-  playerName2.setAttribute("required", "true");
+  const player2NameLabel = document.createElement("label");
+  player2NameLabel.innerText = "Enter Player 2 Name";
+
+  const players = [playerName1, playerName2];
+  const attributes = {
+    type: "text",
+    placeholder: "Enter Player Name",
+    required: "true",
+  };
+
+  players.forEach((player, index) => {
+    player.setAttribute("id", `player${index + 1}Name`);
+    for (let key in attributes) {
+      player.setAttribute(key, attributes[key]);
+    }
+  });
+
+  competitionDiv.appendChild(player1NameLabel);
+  competitionDiv.appendChild(playerName1);
+  competitionDiv.appendChild(player2NameLabel);
   competitionDiv.appendChild(playerName2);
 
   const startButton = document.createElement("button");
@@ -345,10 +315,10 @@ function competition() {
     const player2Name = playerName2.value.trim();
 
     if (!player1Name || !player2Name) {
-      messageContainer.innerText = "Enter Both Players Names";
+      errorOrNormalMessageContainer("ERROR: Enter Both Players Names");
       return;
     } else {
-      messageContainer.innerText = "";
+      errorOrNormalMessageContainer("Competetion Started");
     }
 
     competitionDiv.innerHTML = "";
@@ -358,11 +328,11 @@ function competition() {
 
     const player1Div = document.createElement("div");
     player1Div.classList.add("player-1-div");
-    const player1NameDisplay = document.createElement("h1");
+    const player1NameDisplay = document.createElement("h2");
     player1NameDisplay.innerText = player1Name;
     player1Div.appendChild(player1NameDisplay);
 
-    const player1ScoreDisplay = document.createElement("h2");
+    const player1ScoreDisplay = document.createElement("h3");
     player1ScoreDisplay.innerText = "Score: 0";
     player1Div.appendChild(player1ScoreDisplay);
 
@@ -378,11 +348,11 @@ function competition() {
 
     const player2Div = document.createElement("div");
     player2Div.classList.add("player-2-div");
-    const player2NameDisplay = document.createElement("h1");
+    const player2NameDisplay = document.createElement("h2");
     player2NameDisplay.innerText = player2Name;
     player2Div.appendChild(player2NameDisplay);
 
-    const player2ScoreDisplay = document.createElement("h2");
+    const player2ScoreDisplay = document.createElement("h3");
     player2ScoreDisplay.innerText = "Score: 0";
     player2Div.appendChild(player2ScoreDisplay);
 
@@ -417,83 +387,88 @@ function competition() {
       }
     }
 
-    function switchTurn() {
-      player1Turn = !player1Turn;
-      player1CorrectButton.disabled = !player1Turn;
-      player1WrongButton.disabled = !player1Turn;
-      player2CorrectButton.disabled = player1Turn;
-      player2WrongButton.disabled = player1Turn;
+    function disableAllButtons() {
+      player1CorrectButton.classList.add("inactive-turn");
+      player1WrongButton.classList.add("inactive-turn");
+      player2CorrectButton.classList.add("inactive-turn");
+      player2WrongButton.classList.add("inactive-turn");
+    }
 
-      player1Div.style.backgroundColor = player1Turn ? "green" : "";
-      player2Div.style.backgroundColor = !player1Turn ? "green" : "";
+    function switchTurn() {
+      errorOrNormalMessageContainer("Competition Going On");
+
+      player1Turn = !player1Turn;
+
+      const activeButtons = player1Turn
+        ? [player1CorrectButton, player1WrongButton]
+        : [player2CorrectButton, player2WrongButton];
+      const inactiveButtons = player1Turn
+        ? [player2CorrectButton, player2WrongButton]
+        : [player1CorrectButton, player1WrongButton];
+
+      activeButtons.forEach((button) => button.classList.add("active-turn"));
+      inactiveButtons.forEach((button) =>
+        button.classList.add("inactive-turn")
+      );
+
+      activeButtons.forEach((button) =>
+        button.classList.remove("inactive-turn")
+      );
+      inactiveButtons.forEach((button) =>
+        button.classList.remove("active-turn")
+      );
     }
 
     function checkWinner() {
-      if (player1Score === 10 && !gameOver) {
+      const totalQuestions = quizQuestionArray.length;
+      const totalCorrectAnswersToBe = Math.floor(totalQuestions / 2);
+      if (player1Score >= totalCorrectAnswersToBe && !gameOver) {
         gameOver = true;
         const winnerMessageDiv = document.createElement("div");
         winnerMessageDiv.classList.add("winner-message");
         winnerMessageDiv.innerText = `${player1Name} is the Winner`;
         competitionDiv.appendChild(winnerMessageDiv);
-        player1Div.style.backgroundColor = "";
-        player2Div.style.backgroundColor = "";
+        errorOrNormalMessageContainer("Game Over");
         winnerSound.play();
         disableAllButtons();
       }
-      if (player2Score === 10 && !gameOver) {
+      if (player2Score >= totalCorrectAnswersToBe && !gameOver) {
         gameOver = true;
         const winnerMessageDiv = document.createElement("div");
         winnerMessageDiv.classList.add("winner-message");
         winnerMessageDiv.innerText = `${player2Name} is the Winner`;
         competitionDiv.appendChild(winnerMessageDiv);
-        player1Div.style.backgroundColor = "";
-        player2Div.style.backgroundColor = "";
+        errorOrNormalMessageContainer("Game Over");
         winnerSound.play();
         disableAllButtons();
       }
     }
 
-    function disableAllButtons() {
-      player1CorrectButton.disabled = true;
-      player1WrongButton.disabled = true;
-      player2CorrectButton.disabled = true;
-      player2WrongButton.disabled = true;
+    function handleButtonClick(isCorrect, player) {
+      if (gameOver) return;
+
+      if (player === 1 && player1Turn) {
+        if (isCorrect) player1Score++;
+        else player2Score++;
+      } else if (player === 2 && !player1Turn) {
+        if (isCorrect) player2Score++;
+        else player1Score++;
+      }
+
+      updateScoresAndSwitchTurn();
     }
 
-    player1CorrectButton.addEventListener("click", () => {
-      if (gameOver) return;
-
-      if (player1Turn) {
-        player1Score++;
-        updateScoresAndSwitchTurn();
-      }
-    });
-
-    player1WrongButton.addEventListener("click", () => {
-      if (gameOver) return;
-
-      if (player1Turn) {
-        player2Score++;
-        updateScoresAndSwitchTurn();
-      }
-    });
-
-    player2CorrectButton.addEventListener("click", () => {
-      if (gameOver) return;
-
-      if (!player1Turn) {
-        player2Score++;
-        updateScoresAndSwitchTurn();
-      }
-    });
-
-    player2WrongButton.addEventListener("click", () => {
-      if (gameOver) return;
-
-      if (!player1Turn) {
-        player1Score++;
-        updateScoresAndSwitchTurn();
-      }
-    });
+    player1CorrectButton.addEventListener("click", () =>
+      handleButtonClick(true, 1)
+    );
+    player1WrongButton.addEventListener("click", () =>
+      handleButtonClick(false, 1)
+    );
+    player2CorrectButton.addEventListener("click", () =>
+      handleButtonClick(true, 2)
+    );
+    player2WrongButton.addEventListener("click", () =>
+      handleButtonClick(false, 2)
+    );
   });
 }
