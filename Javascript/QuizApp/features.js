@@ -1,6 +1,31 @@
 const formInput = document.querySelector(".question-input-form");
 const answersContainer = document.querySelector(".answers-container");
 const buttonDiv = document.querySelector(".btn-wrapper");
+let quizQuestionArray = [];
+
+// I created a global variable to store the quiz questions array after fetching it from the API.
+// I did this so that I don't need to change the quiz questions array reference in various functions.
+// Code is working smooth.
+// My app still save the new questions in the quizQuestionArray and display them in the list of questions (Not Saving to API just in memory).
+// So my app is not fully functional (it saves new questions only during run time in quizQuestionArray variable which already has fetched data).
+// I will work on it in future to save the new questions in API file with Method POST after learning all methods related to APIs.
+// I have not focused too much on the design of the app, I will work on it in future.
+
+fetch(
+  "https://raw.githubusercontent.com/Bukhari1214/bukhari1214.github.io/refs/heads/main/data.json"
+)
+  .then((response) => {
+    if (!response.ok) {
+      throw new Error("Fetching Failed!");
+    }
+    return response.json();
+  })
+  .then((data) => {
+    quizQuestionArray = data;
+  })
+  .catch((error) => {
+    errorOrNormalMessageContainer(`Error fetching data:  ${error}`);
+  });
 
 //Function to remove Existing Conatiners from DOM To Show New Results or Output on Same Place
 function removeExistingContainers() {
@@ -19,10 +44,19 @@ function removeExistingContainers() {
   if (existingCompetitionContainer) {
     existingCompetitionContainer.remove();
   }
+
+  const existingMessageContainer = document.querySelector(".message-container");
+  if (existingMessageContainer) {
+    existingMessageContainer.remove();
+  }
 }
 
 // Function To Control Color of Messages Shown in Message Container Div
 function errorOrNormalMessageContainer(text) {
+  removeExistingContainers();
+  const messageContainer = document.createElement("div");
+  messageContainer.classList.add("message-container");
+  document.body.appendChild(messageContainer);
   messageContainer.classList.remove("error-message", "normal-message");
 
   if (text.trim().toLowerCase().includes("error")) {
@@ -80,6 +114,7 @@ function removeHighLightners() {
   });
 }
 
+// Function To Shuffle Input Fields for Answers
 function shuffleAnswers() {
   removeExistingContainers();
   const option1Input = document.getElementById("option1");
@@ -121,7 +156,8 @@ function shuffleAnswers() {
   errorOrNormalMessageContainer("");
 }
 
-function quizListDisplay() {
+// Function To Display Specified number of  Questions in Quiz Array with ascending or descending order options
+function quizListDisplay(sortOrder = "asc") {
   errorOrNormalMessageContainer("");
   formInput.reset();
   removeHighLightners();
@@ -129,25 +165,65 @@ function quizListDisplay() {
 
   const quizQuestionsListDiv = document.createElement("div");
   quizQuestionsListDiv.classList.add("questionContainer");
+
   const quizListHeadingDiv = document.createElement("div");
   quizListHeadingDiv.classList.add("quizListHeadingDiv");
   const quizListHeading = document.createElement("h2");
   quizListHeading.innerText = "All Possible QUIZ Questions";
   quizListHeadingDiv.appendChild(quizListHeading);
+
+  const selectOptionDiv = document.createElement("div");
+  selectOptionDiv.classList.add("select-option-div");
+
+  const selectOptionLabel = document.createElement("label");
+  selectOptionLabel.innerText = "Select Sort Option:";
+  selectOptionDiv.appendChild(selectOptionLabel);
+
+  const sortSelect = document.createElement("select");
+  sortSelect.classList.add("sort-buttons");
+
+  const sortAscOption = document.createElement("option");
+  sortAscOption.value = "asc";
+  sortAscOption.innerText = "Ascending";
+
+  const sortDescOption = document.createElement("option");
+  sortDescOption.value = "desc";
+  sortDescOption.innerText = "Descending";
+
+  sortSelect.appendChild(sortAscOption);
+  sortSelect.appendChild(sortDescOption);
+
+  selectOptionDiv.appendChild(sortSelect);
+  quizListHeadingDiv.appendChild(selectOptionDiv);
   quizQuestionsListDiv.appendChild(quizListHeadingDiv);
+
   document.body.appendChild(quizQuestionsListDiv);
+
+  // Ensure the correct sort option is selected when rendered
+  sortSelect.value = sortOrder;
+
+  sortSelect.addEventListener("change", function () {
+    const selectedSortOrder = sortSelect.value;
+    quizListDisplay(selectedSortOrder); // Re-render with selected order
+  });
 
   const shuffledQuestionArray = quizQuestionArray.sort(
     () => Math.random() - 0.5
   );
-  const quizQuestionsToBeListed = shuffledQuestionArray.slice(0, 5);
 
-  quizQuestionsToBeListed.forEach((quiz, index) => {
+  if (sortOrder === "asc") {
+    shuffledQuestionArray.sort((a, b) => a.question.localeCompare(b.question));
+  } else if (sortOrder === "desc") {
+    shuffledQuestionArray.sort((a, b) => b.question.localeCompare(a.question));
+  }
+
+  shuffledQuestionArray.forEach((quiz, index) => {
     const questionDiv = document.createElement("div");
     questionDiv.classList.add("list-quiz-question");
     questionDiv.innerHTML = `
-        <strong>Question # ${index + 1}: </strong> <em>${quiz.question}</em>
-      `;
+      <strong>Question # ${index + 1}: </strong> <em>${quiz.question}</em>
+    `;
+
     const ul = document.createElement("ul");
     ul.innerHTML = "<strong>Your Options Are:</strong>";
 
@@ -176,6 +252,7 @@ function quizListDisplay() {
 
     quizQuestionsListDiv.appendChild(questionDiv);
   });
+
   removeHighLightners();
 }
 
