@@ -10,8 +10,8 @@ body {
   align-items: center;
   width: 100%;
   height: 100vh;
-  background-image: url("./images/background.webp");
-  background-color: #848a87;
+  /*background-image: url("./images/background.webp");*/
+  background-color: #0b0f0d;
   background-size: cover;
   background-position: center;
   color: rgb(247, 244, 244);
@@ -117,6 +117,9 @@ header {
 
 .quizListHeadingDiv,
 .searchHeadingDiv {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   padding: 10px;
   background: linear-gradient(
@@ -325,4 +328,15 @@ hr {
   background-color: #f1f1f1;
   color: gray;
   cursor: not-allowed;
+}
+
+.select-option-div {
+  display: flex;
+  flex-direction: row; /* Stack the label and select dropdown vertically */
+  justify-content: center; /* Center items horizontally (not needed in column direction, but keeps structure) */
+  align-items: center; /* Center items horizontally */
+}
+
+.select-option-div label {
+  margin: 20px;
 }
