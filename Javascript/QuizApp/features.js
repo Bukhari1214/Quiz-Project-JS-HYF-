@@ -207,17 +207,13 @@ function quizListDisplay(sortOrder = "asc") {
     quizListDisplay(selectedSortOrder); // Re-render with selected order
   });
 
-  const shuffledQuestionArray = quizQuestionArray.sort(
-    () => Math.random() - 0.5
-  );
-
   if (sortOrder === "asc") {
-    shuffledQuestionArray.sort((a, b) => a.question.localeCompare(b.question));
+    quizQuestionArray.sort((a, b) => a.question.localeCompare(b.question));
   } else if (sortOrder === "desc") {
-    shuffledQuestionArray.sort((a, b) => b.question.localeCompare(a.question));
+    quizQuestionArray.sort((a, b) => b.question.localeCompare(a.question));
   }
 
-  shuffledQuestionArray.forEach((quiz, index) => {
+  quizQuestionArray.forEach((quiz, index) => {
     const questionDiv = document.createElement("div");
     questionDiv.classList.add("list-quiz-question");
     questionDiv.innerHTML = `
