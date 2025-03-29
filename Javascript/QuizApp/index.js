@@ -2,41 +2,15 @@ let shuffleButtonCreated = false;
 let createQuizButtonCreated = false;
 let searchButtonCreated = false;
 
-const messageContainer = document.createElement("div");
-messageContainer.classList.add("message-container");
-document.body.appendChild(messageContainer);
-
-//Add More Button Created
-const addMoreButton = document.createElement("button");
-addMoreButton.innerText = "Add More Questions";
-addMoreButton.classList.add("control-buttons");
-buttonDiv.appendChild(addMoreButton);
-addMoreButton.addEventListener("click", addMoreQuestions);
-
-//Shuffle Answers Button Created
-const shuffleButton = document.createElement("button");
-shuffleButton.innerText = "Shuffle Answers";
-shuffleButton.classList.add("control-buttons");
-shuffleButton.type = "button";
-buttonDiv.appendChild(shuffleButton);
-shuffleButton.addEventListener("click", shuffleAnswers);
-shuffleButtonCreated = true;
-
-//Input Check Applied to check length of Question
-const questionInputCheck = document.getElementById("question");
-const maxLengthOfInput = questionInputCheck.maxLength;
-question.addEventListener("input", (event) => {
-  const currentLength = event.target.value.length;
-  if (currentLength >= maxLengthOfInput) {
-    messageContainer.innerText =
-      "ERROR: Question cannot be more than 140 characters!\nThis app saves only first 140 characters of input question.";
-  }
-});
+const formInput = document.querySelector(".question-input-form");
+const answersContainer = document.querySelector(".answers-container");
+const buttonDiv = document.querySelector(".btn-wrapper");
 
 //Colouring the Input Answers Green for Right and Red for Wrong
 const radioButtons = document.querySelectorAll(
   'input[type="radio"][name="correct-answer"]'
 );
+
 let correctAnswerInput;
 radioButtons.forEach((radioButton) => {
   radioButton.addEventListener("change", () => {
@@ -47,41 +21,32 @@ radioButtons.forEach((radioButton) => {
   });
 });
 
-// New Button for Search Bar
-const searchButton = document.createElement("button");
-searchButton.innerText = "Search Questions";
-searchButton.classList.add("control-buttons");
-searchButton.type = "button";
-buttonDiv.appendChild(searchButton);
-searchButton.addEventListener("click", searchInQuestions);
-searchButtonCreated = true;
+//Input Check Applied to check length of Question
+const questionInputCheck = document.getElementById("question");
+const maxLengthOfInput = questionInputCheck.maxLength;
+question.addEventListener("input", (event) => {
+  const currentLength = event.target.value.length;
+  if (currentLength >= maxLengthOfInput) {
+    errorOrNormalMessageContainer(
+      `ERROR: Question cannot be more than ${maxLengthOfInput} characters!\nThis app saves only first ${maxLengthOfInput} characters of input question.`
+    );
+  }
+});
 
 // Submitt Input Form Event Handler
 
 formInput.addEventListener("submit", (event) => {
-  const existingQuizContainer = document.querySelector(".questionContainer");
-  if (existingQuizContainer) {
-    existingQuizContainer.remove();
-  }
-
-  const existingSearchContainer = document.querySelector(".searchContainerDiv");
-  if (existingSearchContainer) {
-    existingSearchContainer.remove();
-  }
-
-  const existingCompetitionContainer =
-    document.querySelector(".competition-div");
-  if (existingCompetitionContainer) {
-    existingCompetitionContainer.remove();
-  }
-
   event.preventDefault();
+  errorOrNormalMessageContainer("ERROR: Question and Options are required!");
+  removeExistingContainers();
+  removeHighLightners();
 
   const questionInput = document.getElementById("question").value;
   const option1Input = document.getElementById("option1").value;
   const option2Input = document.getElementById("option2").value;
   const option3Input = document.getElementById("option3").value;
   const option4Input = document.getElementById("option4").value;
+
   const questionExists = quizQuestionArray.some(
     (item) => item.question.toLowerCase() === questionInput.toLowerCase()
   );
@@ -131,21 +96,41 @@ formInput.addEventListener("submit", (event) => {
       );
     }
   }
-
-  // Create Quiz Button appears after a check
-
-  if (quizQuestionArray.length > 16 && !createQuizButtonCreated) {
-    const createQuizButton = document.createElement("button");
-    createQuizButton.innerText = "Create a Quiz";
-    createQuizButton.classList.add("control-buttons");
-    createQuizButton.type = "button";
-    buttonDiv.appendChild(createQuizButton);
-
-    createQuizButton.addEventListener("click", quizListDisplay);
-    createQuizButtonCreated = true;
-  }
-  removeHighLightners();
 });
+
+//Add More Button Created
+const addMoreButton = document.createElement("button");
+addMoreButton.innerText = "Add More Questions";
+addMoreButton.classList.add("control-buttons");
+buttonDiv.appendChild(addMoreButton);
+addMoreButton.addEventListener("click", addMoreQuestions);
+
+//Shuffle Answers Button Created
+const shuffleButton = document.createElement("button");
+shuffleButton.innerText = "Shuffle Answers";
+shuffleButton.classList.add("control-buttons");
+shuffleButton.type = "button";
+buttonDiv.appendChild(shuffleButton);
+shuffleButton.addEventListener("click", shuffleAnswers);
+shuffleButtonCreated = true;
+
+// Create Button for Search Bar
+const searchButton = document.createElement("button");
+searchButton.innerText = "Search Questions";
+searchButton.classList.add("control-buttons");
+searchButton.type = "button";
+buttonDiv.appendChild(searchButton);
+searchButton.addEventListener("click", searchInQuestions);
+searchButtonCreated = true;
+
+// Create Quiz Button With Sorting Options . . .
+const createQuizButton = document.createElement("button");
+createQuizButton.innerText = "Create a Quiz";
+createQuizButton.classList.add("control-buttons");
+createQuizButton.type = "button";
+buttonDiv.appendChild(createQuizButton);
+createQuizButton.addEventListener("click", quizListDisplay);
+createQuizButtonCreated = true;
 
 // Create Competition Button
 
