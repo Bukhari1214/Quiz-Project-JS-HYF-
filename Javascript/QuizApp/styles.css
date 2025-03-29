@@ -250,6 +250,15 @@ hr {
   font-weight: bold;
 }
 
+.competition-sub-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  font-style: italic;
+  color: rgba(136, 240, 151);
+}
+
 .player-1-div,
 .player-2-div {
   font-weight: bold;
@@ -260,16 +269,6 @@ hr {
   padding: 10px;
   text-align: left;
   align-items: center;
-}
-
-.competition-sub-div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-  font-style: italic;
-  font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
-  color: rgba(136, 240, 151);
 }
 
 .winner-message {
@@ -328,13 +327,14 @@ hr {
   background-color: #f1f1f1;
   color: gray;
   cursor: not-allowed;
+  pointer-events: none;
 }
 
 .select-option-div {
   display: flex;
-  flex-direction: row; /* Stack the label and select dropdown vertically */
-  justify-content: center; /* Center items horizontally (not needed in column direction, but keeps structure) */
-  align-items: center; /* Center items horizontally */
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 .select-option-div label {

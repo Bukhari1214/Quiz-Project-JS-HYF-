@@ -1,15 +1,4 @@
-const formInput = document.querySelector(".question-input-form");
-const answersContainer = document.querySelector(".answers-container");
-const buttonDiv = document.querySelector(".btn-wrapper");
 let quizQuestionArray = [];
-
-// I created a global variable to store the quiz questions array after fetching it from the API.
-// I did this so that I don't need to change the quiz questions array reference in various functions.
-// Code is working smooth.
-// My app still save the new questions in the quizQuestionArray and display them in the list of questions (Not Saving to API just in memory).
-// So my app is not fully functional (it saves new questions only during run time in quizQuestionArray variable which already has fetched data).
-// I will work on it in future to save the new questions in API file with Method POST after learning all methods related to APIs.
-// I have not focused too much on the design of the app, I will work on it in future.
 
 fetch(
   "https://raw.githubusercontent.com/Bukhari1214/bukhari1214.github.io/refs/heads/main/data.json"
@@ -39,15 +28,19 @@ function removeExistingContainers() {
     existingSearchContainer.remove();
   }
 
+  const existingMessageContainer = document.querySelector(".message-container");
+  if (existingMessageContainer) {
+    existingMessageContainer.remove();
+  }
+}
+
+//Function to remove Existing Game Competition Conatiner from DOM To Show New Results or Output on Same Place
+
+function removeCompetitionContainer() {
   const existingCompetitionContainer =
     document.querySelector(".competition-div");
   if (existingCompetitionContainer) {
     existingCompetitionContainer.remove();
-  }
-
-  const existingMessageContainer = document.querySelector(".message-container");
-  if (existingMessageContainer) {
-    existingMessageContainer.remove();
   }
 }
 
@@ -117,6 +110,8 @@ function removeHighLightners() {
 // Function To Shuffle Input Fields for Answers
 function shuffleAnswers() {
   removeExistingContainers();
+  removeCompetitionContainer();
+  removeHighLightners();
   const option1Input = document.getElementById("option1");
   const option2Input = document.getElementById("option2");
   const option3Input = document.getElementById("option3");
@@ -162,6 +157,12 @@ function quizListDisplay(sortOrder = "asc") {
   formInput.reset();
   removeHighLightners();
   removeExistingContainers();
+  removeCompetitionContainer();
+
+  if (!quizQuestionArray || quizQuestionArray.length === 0) {
+    errorOrNormalMessageContainer("ERROR: No quiz questions available.");
+    return;
+  }
 
   const quizQuestionsListDiv = document.createElement("div");
   quizQuestionsListDiv.classList.add("questionContainer");
@@ -254,15 +255,15 @@ function quizListDisplay(sortOrder = "asc") {
 
 function addMoreQuestions() {
   removeExistingContainers();
-
   formInput.reset();
   removeHighLightners();
   errorOrNormalMessageContainer("");
+  removeCompetitionContainer();
 }
 
 function searchInQuestions() {
   removeExistingContainers();
-
+  removeCompetitionContainer();
   errorOrNormalMessageContainer("");
   removeHighLightners();
   formInput.reset();
@@ -348,16 +349,27 @@ function competition() {
   removeExistingContainers();
   const winnerSound = new Audio("sounds/winsound.wav");
 
-  const competitionDiv = document.createElement("div");
-  competitionDiv.classList.add("competition-div");
-  document.body.appendChild(competitionDiv);
+  let competitionDiv = document.querySelector(".competition-div");
+  if (competitionDiv) {
+    competitionDiv.innerHTML = "";
+  } else {
+    competitionDiv = document.createElement("div");
+    competitionDiv.classList.add("competition-div");
+    document.body.appendChild(competitionDiv);
+  }
 
   const player1NameLabel = document.createElement("label");
   player1NameLabel.innerText = "Enter Player 1 Name";
   const playerName1 = document.createElement("input");
-  const playerName2 = document.createElement("input");
+
   const player2NameLabel = document.createElement("label");
   player2NameLabel.innerText = "Enter Player 2 Name";
+  const playerName2 = document.createElement("input");
+
+  competitionDiv.appendChild(player1NameLabel);
+  competitionDiv.appendChild(playerName1);
+  competitionDiv.appendChild(player2NameLabel);
+  competitionDiv.appendChild(playerName2);
 
   const players = [playerName1, playerName2];
   const attributes = {
@@ -373,75 +385,70 @@ function competition() {
     }
   });
 
-  competitionDiv.appendChild(player1NameLabel);
-  competitionDiv.appendChild(playerName1);
-  competitionDiv.appendChild(player2NameLabel);
-  competitionDiv.appendChild(playerName2);
-
   const startButton = document.createElement("button");
   startButton.innerText = "Start Competition";
   startButton.classList.add("control-buttons");
   competitionDiv.appendChild(startButton);
 
   startButton.addEventListener("click", () => {
-    const player1Name = playerName1.value.trim();
-    const player2Name = playerName2.value.trim();
-
-    if (!player1Name || !player2Name) {
+    if (!playerName1.value || !playerName2.value) {
+      competitionDiv.innerHTML = "";
       errorOrNormalMessageContainer("ERROR: Enter Both Players Names");
       return;
-    } else {
-      errorOrNormalMessageContainer("Competetion Started");
     }
 
     competitionDiv.innerHTML = "";
+    errorOrNormalMessageContainer("");
 
     const competitionSubDiv = document.createElement("div");
     competitionSubDiv.classList.add("competition-sub-div");
 
     const player1Div = document.createElement("div");
     player1Div.classList.add("player-1-div");
+
     const player1NameDisplay = document.createElement("h2");
-    player1NameDisplay.innerText = player1Name;
-    player1Div.appendChild(player1NameDisplay);
+    player1NameDisplay.innerText = playerName1.value;
 
     const player1ScoreDisplay = document.createElement("h3");
     player1ScoreDisplay.innerText = "Score: 0";
-    player1Div.appendChild(player1ScoreDisplay);
 
     const player1CorrectButton = document.createElement("button");
     player1CorrectButton.innerText = "Correct";
     player1CorrectButton.classList.add("control-buttons");
+
     const player1WrongButton = document.createElement("button");
     player1WrongButton.innerText = "Wrong";
     player1WrongButton.classList.add("control-buttons");
 
+    player1Div.appendChild(player1NameDisplay);
+    player1Div.appendChild(player1ScoreDisplay);
     player1Div.appendChild(player1CorrectButton);
     player1Div.appendChild(player1WrongButton);
 
     const player2Div = document.createElement("div");
     player2Div.classList.add("player-2-div");
+
     const player2NameDisplay = document.createElement("h2");
-    player2NameDisplay.innerText = player2Name;
-    player2Div.appendChild(player2NameDisplay);
+    player2NameDisplay.innerText = playerName2.value;
 
     const player2ScoreDisplay = document.createElement("h3");
     player2ScoreDisplay.innerText = "Score: 0";
-    player2Div.appendChild(player2ScoreDisplay);
 
     const player2CorrectButton = document.createElement("button");
     player2CorrectButton.innerText = "Correct";
     player2CorrectButton.classList.add("control-buttons");
+
     const player2WrongButton = document.createElement("button");
     player2WrongButton.innerText = "Wrong";
     player2WrongButton.classList.add("control-buttons");
 
+    player2Div.appendChild(player2NameDisplay);
+    player2Div.appendChild(player2ScoreDisplay);
     player2Div.appendChild(player2CorrectButton);
     player2Div.appendChild(player2WrongButton);
 
     competitionSubDiv.appendChild(player1Div);
     competitionSubDiv.appendChild(player2Div);
-    competitionSubDiv.style.flexDirection = "row";
     competitionDiv.appendChild(competitionSubDiv);
 
     let player1Score = 0;
@@ -450,11 +457,14 @@ function competition() {
     let gameOver = false;
 
     function updateScoresAndSwitchTurn() {
-      if (gameOver) return;
+      if (gameOver) {
+        return;
+      }
+      player1ScoreDisplay.innerText = `Score IS: ${player1Score}`;
+      player2ScoreDisplay.innerText = `Score IS: ${player2Score}`;
 
-      player1ScoreDisplay.innerText = `Score: ${player1Score}`;
-      player2ScoreDisplay.innerText = `Score: ${player2Score}`;
       checkWinner();
+
       if (!gameOver) {
         switchTurn();
       }
@@ -468,8 +478,6 @@ function competition() {
     }
 
     function switchTurn() {
-      errorOrNormalMessageContainer("Competition Going On");
-
       player1Turn = !player1Turn;
 
       const activeButtons = player1Turn
@@ -480,6 +488,7 @@ function competition() {
         : [player1CorrectButton, player1WrongButton];
 
       activeButtons.forEach((button) => button.classList.add("active-turn"));
+
       inactiveButtons.forEach((button) =>
         button.classList.add("inactive-turn")
       );
@@ -487,6 +496,7 @@ function competition() {
       activeButtons.forEach((button) =>
         button.classList.remove("inactive-turn")
       );
+
       inactiveButtons.forEach((button) =>
         button.classList.remove("active-turn")
       );
@@ -499,9 +509,8 @@ function competition() {
         gameOver = true;
         const winnerMessageDiv = document.createElement("div");
         winnerMessageDiv.classList.add("winner-message");
-        winnerMessageDiv.innerText = `${player1Name} is the Winner`;
+        winnerMessageDiv.innerText = `${playerName1.value} is the Winner`;
         competitionDiv.appendChild(winnerMessageDiv);
-        errorOrNormalMessageContainer("Game Over");
         winnerSound.play();
         disableAllButtons();
       }
@@ -509,9 +518,9 @@ function competition() {
         gameOver = true;
         const winnerMessageDiv = document.createElement("div");
         winnerMessageDiv.classList.add("winner-message");
-        winnerMessageDiv.innerText = `${player2Name} is the Winner`;
+        winnerMessageDiv.innerText = `${playerName2.value} is the Winner`;
         competitionDiv.appendChild(winnerMessageDiv);
-        errorOrNormalMessageContainer("Game Over");
+
         winnerSound.play();
         disableAllButtons();
       }
@@ -527,7 +536,6 @@ function competition() {
         if (isCorrect) player2Score++;
         else player1Score++;
       }
-
       updateScoresAndSwitchTurn();
     }
 

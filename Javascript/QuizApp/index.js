@@ -1,11 +1,16 @@
-// let shuffleButtonCreated = false;
-// let createQuizButtonCreated = false;
-// let searchButtonCreated = false;
+let shuffleButtonCreated = false;
+let createQuizButtonCreated = false;
+let searchButtonCreated = false;
+
+const formInput = document.querySelector(".question-input-form");
+const answersContainer = document.querySelector(".answers-container");
+const buttonDiv = document.querySelector(".btn-wrapper");
 
 //Colouring the Input Answers Green for Right and Red for Wrong
 const radioButtons = document.querySelectorAll(
   'input[type="radio"][name="correct-answer"]'
 );
+
 let correctAnswerInput;
 radioButtons.forEach((radioButton) => {
   radioButton.addEventListener("change", () => {
@@ -23,15 +28,16 @@ question.addEventListener("input", (event) => {
   const currentLength = event.target.value.length;
   if (currentLength >= maxLengthOfInput) {
     errorOrNormalMessageContainer(
-      "ERROR: Question cannot be more than 140 characters!\nThis app saves only first 140 characters of input question."
+      `ERROR: Question cannot be more than ${maxLengthOfInput} characters!\nThis app saves only first ${maxLengthOfInput} characters of input question.`
     );
   }
 });
 
 // Submitt Input Form Event Handler
+
 formInput.addEventListener("submit", (event) => {
   event.preventDefault();
-
+  errorOrNormalMessageContainer("ERROR: Question and Options are required!");
   removeExistingContainers();
   removeHighLightners();
 
