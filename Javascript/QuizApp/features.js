@@ -1,42 +1,33 @@
 let quizQuestionArray = [];
 let fetchedData = [];
 
-// In final submission of the project, the following code will be used with proper UI
-
 // Asynchronous Function to fetch data from GitHub API
 async function fetchQuizData() {
-  let dataToBeFetched = null;
+  let isDataFetched = null;
 
-  return new Promise((resolve, reject) => {
-    fetch(
+  try {
+    const response = await fetch(
       "https://raw.githubusercontent.com/Bukhari1214/bukhari1214.github.io/refs/heads/main/data.json"
-    )
-      .then((response) => {
-        if (!response.ok) {
-          reject("Fetching Failed!");
-        } else {
-          return response.json();
-        }
-      })
-      .then((data) => resolve(data))
-      .catch((error) => reject(`Error fetching data: ${error}`));
-  })
-    .then((data) => {
-      dataToBeFetched = data;
-      fetchedData = dataToBeFetched;
-    })
-    .catch((error) => {
-      errorOrNormalMessageContainer(error);
-    })
-    .finally(() => {
-      if (dataToBeFetched) {
-        errorOrNormalMessageContainer("All Set: Data successfully loaded!");
-      } else {
-        errorOrNormalMessageContainer(
-          "ERROR: Oops! Something went wrong while fetching the data."
-        );
-      }
-    });
+    );
+
+    if (!response.ok) {
+      throw new Error("Fetching Failed!");
+    }
+
+    const data = await response.json();
+    fetchedData = data;
+    isDataFetched = true;
+  } catch (error) {
+    errorOrNormalMessageContainer(`Error fetching data: ${error.message}`);
+  } finally {
+    if (isDataFetched) {
+      errorOrNormalMessageContainer("All Set: Data successfully loaded!");
+    } else {
+      errorOrNormalMessageContainer(
+        "ERROR: Oops! Something went wrong while fetching the data."
+      );
+    }
+  }
 }
 
 //Function to sumbit the form
@@ -406,185 +397,179 @@ async function competition() {
     startButton.classList.add("control-buttons");
     competitionDiv.appendChild(startButton);
 
-    startButton.addEventListener(
-      "click",
-      () => {
-        if (!playerName1.value || !playerName2.value) {
-          competitionDiv.innerHTML = "";
-          errorOrNormalMessageContainer("ERROR: Enter Both Players Names");
-          return;
-        } else if (
-          playerName1.value.toLocaleLowerCase() ===
-          playerName2.value.toLocaleLowerCase()
-        ) {
-          competitionDiv.innerHTML = "";
-          errorOrNormalMessageContainer(
-            "ERROR: Both Players Cannot Have Same Names"
-          );
-          return;
-        }
-
+    startButton.addEventListener("click", () => {
+      if (!playerName1.value || !playerName2.value) {
         competitionDiv.innerHTML = "";
-        errorOrNormalMessageContainer("");
-
-        const competitionSubDiv = document.createElement("div");
-        competitionSubDiv.classList.add("competition-sub-div");
-
-        const player1Div = document.createElement("div");
-        player1Div.classList.add("player-1-div");
-
-        const player1NameDisplay = document.createElement("h2");
-        player1NameDisplay.innerText = playerName1.value;
-
-        const player1ScoreDisplay = document.createElement("h3");
-        player1ScoreDisplay.innerText = "Score: 0";
-
-        const player1CorrectButton = document.createElement("button");
-        player1CorrectButton.innerText = "Correct";
-        player1CorrectButton.classList.add("control-buttons");
-
-        const player1WrongButton = document.createElement("button");
-        player1WrongButton.innerText = "Wrong";
-        player1WrongButton.classList.add("control-buttons");
-
-        player1Div.appendChild(player1NameDisplay);
-        player1Div.appendChild(player1ScoreDisplay);
-        player1Div.appendChild(player1CorrectButton);
-        player1Div.appendChild(player1WrongButton);
-
-        const player2Div = document.createElement("div");
-        player2Div.classList.add("player-2-div");
-
-        const player2NameDisplay = document.createElement("h2");
-        player2NameDisplay.innerText = playerName2.value;
-
-        const player2ScoreDisplay = document.createElement("h3");
-        player2ScoreDisplay.innerText = "Score: 0";
-
-        const player2CorrectButton = document.createElement("button");
-        player2CorrectButton.innerText = "Correct";
-        player2CorrectButton.classList.add("control-buttons");
-
-        const player2WrongButton = document.createElement("button");
-        player2WrongButton.innerText = "Wrong";
-        player2WrongButton.classList.add("control-buttons");
-
-        player2Div.appendChild(player2NameDisplay);
-        player2Div.appendChild(player2ScoreDisplay);
-        player2Div.appendChild(player2CorrectButton);
-        player2Div.appendChild(player2WrongButton);
-
-        competitionSubDiv.appendChild(player1Div);
-        competitionSubDiv.appendChild(player2Div);
-        competitionDiv.appendChild(competitionSubDiv);
-
-        let player1Score = 0;
-        let player2Score = 0;
-        let player1Turn = true;
-        let gameOver = false;
-
-        function updateScoresAndSwitchTurn() {
-          if (gameOver) {
-            return;
-          }
-          player1ScoreDisplay.innerText = `Score IS: ${player1Score}`;
-          player2ScoreDisplay.innerText = `Score IS: ${player2Score}`;
-
-          checkWinner();
-
-          if (!gameOver) {
-            switchTurn();
-          }
-        }
-
-        function disableAllButtons() {
-          player1CorrectButton.classList.add("inactive-turn");
-          player1WrongButton.classList.add("inactive-turn");
-          player2CorrectButton.classList.add("inactive-turn");
-          player2WrongButton.classList.add("inactive-turn");
-        }
-
-        function switchTurn() {
-          player1Turn = !player1Turn;
-
-          const activeButtons = player1Turn
-            ? [player1CorrectButton, player1WrongButton]
-            : [player2CorrectButton, player2WrongButton];
-          const inactiveButtons = player1Turn
-            ? [player2CorrectButton, player2WrongButton]
-            : [player1CorrectButton, player1WrongButton];
-
-          activeButtons.forEach((button) =>
-            button.classList.add("active-turn")
-          );
-
-          inactiveButtons.forEach((button) =>
-            button.classList.add("inactive-turn")
-          );
-
-          activeButtons.forEach((button) =>
-            button.classList.remove("inactive-turn")
-          );
-
-          inactiveButtons.forEach((button) =>
-            button.classList.remove("active-turn")
-          );
-        }
-
-        async function checkWinner() {
-          const totalQuestions = mergedQuizData.length;
-          const totalCorrectAnswersToBe = Math.floor(totalQuestions / 2);
-          if (player1Score >= totalCorrectAnswersToBe && !gameOver) {
-            gameOver = true;
-            const winnerMessageDiv = document.createElement("div");
-            winnerMessageDiv.classList.add("winner-message");
-            winnerMessageDiv.innerText = `₊˚✧ ${playerName1.value} is the Winner ✧˚₊`;
-            competitionDiv.appendChild(winnerMessageDiv);
-            winnerSound.play();
-            errorOrNormalMessageContainer("₊˚✧ GAME OVER ✧˚₊");
-            disableAllButtons();
-          }
-          if (player2Score >= totalCorrectAnswersToBe && !gameOver) {
-            gameOver = true;
-            const winnerMessageDiv = document.createElement("div");
-            winnerMessageDiv.classList.add("winner-message");
-            winnerMessageDiv.innerText = `${playerName2.value} is the Winner`;
-            competitionDiv.appendChild(winnerMessageDiv);
-            winnerSound.play();
-            disableAllButtons();
-          }
-        }
-
-        function handleButtonClick(isCorrect, player) {
-          if (gameOver) return;
-
-          if (player === 1 && player1Turn) {
-            if (isCorrect) player1Score++;
-            else player2Score++;
-          } else if (player === 2 && !player1Turn) {
-            if (isCorrect) player2Score++;
-            else player1Score++;
-          }
-          updateScoresAndSwitchTurn();
-        }
-
-        player1CorrectButton.addEventListener("click", () =>
-          handleButtonClick(true, 1)
+        errorOrNormalMessageContainer("ERROR: Enter Both Players Names");
+        return;
+      } else if (
+        playerName1.value.toLocaleLowerCase() ===
+        playerName2.value.toLocaleLowerCase()
+      ) {
+        competitionDiv.innerHTML = "";
+        errorOrNormalMessageContainer(
+          "ERROR: Both Players Cannot Have Same Names"
         );
-        player1WrongButton.addEventListener("click", () =>
-          handleButtonClick(false, 1)
+        return;
+      }
+
+      competitionDiv.innerHTML = "";
+      errorOrNormalMessageContainer("");
+
+      const competitionSubDiv = document.createElement("div");
+      competitionSubDiv.classList.add("competition-sub-div");
+
+      const player1Div = document.createElement("div");
+      player1Div.classList.add("player-1-div");
+
+      const player1NameDisplay = document.createElement("h2");
+      player1NameDisplay.innerText = playerName1.value;
+
+      const player1ScoreDisplay = document.createElement("h3");
+      player1ScoreDisplay.innerText = "Score: 0";
+
+      const player1CorrectButton = document.createElement("button");
+      player1CorrectButton.innerText = "Correct";
+      player1CorrectButton.classList.add("control-buttons");
+
+      const player1WrongButton = document.createElement("button");
+      player1WrongButton.innerText = "Wrong";
+      player1WrongButton.classList.add("control-buttons");
+
+      player1Div.appendChild(player1NameDisplay);
+      player1Div.appendChild(player1ScoreDisplay);
+      player1Div.appendChild(player1CorrectButton);
+      player1Div.appendChild(player1WrongButton);
+
+      const player2Div = document.createElement("div");
+      player2Div.classList.add("player-2-div");
+
+      const player2NameDisplay = document.createElement("h2");
+      player2NameDisplay.innerText = playerName2.value;
+
+      const player2ScoreDisplay = document.createElement("h3");
+      player2ScoreDisplay.innerText = "Score: 0";
+
+      const player2CorrectButton = document.createElement("button");
+      player2CorrectButton.innerText = "Correct";
+      player2CorrectButton.classList.add("control-buttons");
+
+      const player2WrongButton = document.createElement("button");
+      player2WrongButton.innerText = "Wrong";
+      player2WrongButton.classList.add("control-buttons");
+
+      player2Div.appendChild(player2NameDisplay);
+      player2Div.appendChild(player2ScoreDisplay);
+      player2Div.appendChild(player2CorrectButton);
+      player2Div.appendChild(player2WrongButton);
+
+      competitionSubDiv.appendChild(player1Div);
+      competitionSubDiv.appendChild(player2Div);
+      competitionDiv.appendChild(competitionSubDiv);
+
+      let player1Score = 0;
+      let player2Score = 0;
+      let player1Turn = true;
+      let gameOver = false;
+
+      function updateScoresAndSwitchTurn() {
+        if (gameOver) {
+          return;
+        }
+        player1ScoreDisplay.innerText = `Score IS: ${player1Score}`;
+        player2ScoreDisplay.innerText = `Score IS: ${player2Score}`;
+
+        checkWinner();
+
+        if (!gameOver) {
+          switchTurn();
+        }
+      }
+
+      function disableAllButtons() {
+        player1CorrectButton.classList.add("inactive-turn");
+        player1WrongButton.classList.add("inactive-turn");
+        player2CorrectButton.classList.add("inactive-turn");
+        player2WrongButton.classList.add("inactive-turn");
+      }
+
+      function switchTurn() {
+        player1Turn = !player1Turn;
+
+        const activeButtons = player1Turn
+          ? [player1CorrectButton, player1WrongButton]
+          : [player2CorrectButton, player2WrongButton];
+        const inactiveButtons = player1Turn
+          ? [player2CorrectButton, player2WrongButton]
+          : [player1CorrectButton, player1WrongButton];
+
+        activeButtons.forEach((button) => button.classList.add("active-turn"));
+
+        inactiveButtons.forEach((button) =>
+          button.classList.add("inactive-turn")
         );
-        player2CorrectButton.addEventListener("click", () =>
-          handleButtonClick(true, 2)
+
+        activeButtons.forEach((button) =>
+          button.classList.remove("inactive-turn")
         );
-        player2WrongButton.addEventListener("click", () =>
-          handleButtonClick(false, 2)
+
+        inactiveButtons.forEach((button) =>
+          button.classList.remove("active-turn")
         );
-      },
-      1000
-    );
+      }
+
+      async function checkWinner() {
+        const totalQuestions = mergedQuizData.length;
+        const totalCorrectAnswersToBe = Math.floor(totalQuestions / 2);
+        if (player1Score >= totalCorrectAnswersToBe && !gameOver) {
+          gameOver = true;
+          const winnerMessageDiv = document.createElement("div");
+          winnerMessageDiv.classList.add("winner-message");
+          winnerMessageDiv.innerText = `₊˚✧ ${playerName1.value} is the Winner ✧˚₊`;
+          competitionDiv.appendChild(winnerMessageDiv);
+          winnerSound.play();
+          errorOrNormalMessageContainer("₊˚✧ GAME OVER ✧˚₊");
+          disableAllButtons();
+        }
+        if (player2Score >= totalCorrectAnswersToBe && !gameOver) {
+          gameOver = true;
+          const winnerMessageDiv = document.createElement("div");
+          winnerMessageDiv.classList.add("winner-message");
+          winnerMessageDiv.innerText = `${playerName2.value} is the Winner`;
+          competitionDiv.appendChild(winnerMessageDiv);
+          winnerSound.play();
+          disableAllButtons();
+        }
+      }
+
+      function handleButtonClick(isCorrect, player) {
+        if (gameOver) return;
+
+        if (player === 1 && player1Turn) {
+          if (isCorrect) player1Score++;
+          else player2Score++;
+        } else if (player === 2 && !player1Turn) {
+          if (isCorrect) player2Score++;
+          else player1Score++;
+        }
+        updateScoresAndSwitchTurn();
+      }
+
+      player1CorrectButton.addEventListener("click", () =>
+        handleButtonClick(true, 1)
+      );
+      player1WrongButton.addEventListener("click", () =>
+        handleButtonClick(false, 1)
+      );
+      player2CorrectButton.addEventListener("click", () =>
+        handleButtonClick(true, 2)
+      );
+      player2WrongButton.addEventListener("click", () =>
+        handleButtonClick(false, 2)
+      );
+    });
   } catch (error) {
-    console.error("Error in competition function:", error);
+    console.error("ERROR IS", error);
     errorOrNormalMessageContainer("Error while starting the competition.");
   }
 }
