@@ -34,69 +34,7 @@ question.addEventListener("input", (event) => {
 });
 
 // Submitt Input Form Event Handler
-
-formInput.addEventListener("submit", (event) => {
-  event.preventDefault();
-  errorOrNormalMessageContainer("ERROR: Question and Options are required!");
-  removeExistingContainers();
-  removeHighLightners();
-
-  const questionInput = document.getElementById("question").value;
-  const option1Input = document.getElementById("option1").value;
-  const option2Input = document.getElementById("option2").value;
-  const option3Input = document.getElementById("option3").value;
-  const option4Input = document.getElementById("option4").value;
-
-  const questionExists = quizQuestionArray.some(
-    (item) => item.question.toLowerCase() === questionInput.toLowerCase()
-  );
-
-  const optionsDuplicationCheck = [
-    option1Input,
-    option2Input,
-    option3Input,
-    option4Input,
-  ];
-
-  const duplicateOption =
-    optionsDuplicationCheck.length !== new Set(optionsDuplicationCheck).size;
-
-  if (duplicateOption) {
-    errorOrNormalMessageContainer("ERROR: Duplicate Answers Found!");
-  } else {
-    if (questionExists) {
-      errorOrNormalMessageContainer(
-        "Repetition ERROR: Question Already Exists!"
-      );
-    } else {
-      const options = [
-        { text: option1Input, isCorrect: correctAnswerInput === "option1" },
-        { text: option2Input, isCorrect: correctAnswerInput === "option2" },
-        { text: option3Input, isCorrect: correctAnswerInput === "option3" },
-        { text: option4Input, isCorrect: correctAnswerInput === "option4" },
-      ];
-
-      const correctAnswerText = options.find(
-        (option) => option.isCorrect
-      )?.text;
-
-      const quizQuestion = {
-        id: quizQuestionArray.length + 1,
-        question: questionInput,
-        options: options,
-        explanation: `The correct answer is ${correctAnswerText}.`,
-      };
-
-      quizQuestionArray.push(quizQuestion);
-
-      errorOrNormalMessageContainer(
-        `New question with possible options and correct option INSERTED with ID: ${
-          quizQuestionArray[quizQuestionArray.length - 1].id
-        }`
-      );
-    }
-  }
-});
+formInput.addEventListener("submit", submitForm);
 
 //Add More Button Created
 const addMoreButton = document.createElement("button");
