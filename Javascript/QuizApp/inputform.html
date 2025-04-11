@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz Application Project</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <button id="theme-toggle" class="toggle-button">Change Theme</button>
+      <div class="heading-container">
+        <div class="logo-container">
+          <img src="logo/logo.png" alt="Logo" class="logo" />
+        </div>
+
+        <div class="heading-nav-container">
+          <h1>Quiz Application Project</h1>
+          <h2>Welcome to Input Quiz Question Form</h2>
+          <nav>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="inputform.html">Input</a></li>
+              <li id="search"><a href="search.html">Search</a></li>
+              <li id="display"><a href="display.html">Display</a></li>
+              <li id="game"><a href="game.html">Competition</a></li>
+            </ul>
+          </nav>
+        </div>
+      </div>
+    </header>
+    <main>
+      <h1>Here You Can Add New Questions</h1>
+      <!-- Error Message Display Area -->
+      <div class="message-container">
+        <p class="message-text"></p>
+      </div>
+      <form class="question-input-form">
+        <!-- Possible Question -->
+        <label for="question">Enter the Question:</label>
+        <input
+          type="text"
+          id="question"
+          name="question"
+          maxlength="140"
+          placeholder="Enter Your Question Here"
+          required
+        />
+        <!-- Possible Answers -->
+        <div class="answers-container">
+          <label for="option1">Answer # 1:</label>
+          <input
+            type="text"
+            id="option1"
+            name="answer"
+            placeholder="Answer option 01"
+            required
+          />
+          <label for="option2">Answer # 2:</label>
+          <input
+            type="text"
+            id="option2"
+            name="answer"
+            placeholder="Answer option 02"
+            required
+          />
+          <label for="option3">Answer # 3:</label>
+          <input
+            type="text"
+            id="option3"
+            name="answer"
+            placeholder="Answer option 03"
+            required
+          />
+          <label for="option4">Answer # 4:</label>
+          <input
+            type="text"
+            id="option4"
+            name="answer"
+            placeholder="Answer option 04"
+            required
+          />
+        </div>
+        <!-- Correct answer -->
+        <div class="select-correct-answer">
+          <fieldset>
+            <legend>Select the Correct Answer:</legend>
+            <label class="labels-input-radio" for="correct-answer1"># 1</label>
+            <input
+              type="radio"
+              id="correct-answer1"
+              name="correct-answer"
+              value="option1"
+              required
+            />
+
+            <label class="labels-input-radio" for="correct-answer2"># 2</label>
+            <input
+              type="radio"
+              id="correct-answer2"
+              name="correct-answer"
+              value="option2"
+              required
+            />
+
+            <label class="labels-input-radio" for="correct-answer3"># 3</label>
+            <input
+              type="radio"
+              id="correct-answer3"
+              name="correct-answer"
+              value="option3"
+              required
+            />
+
+            <label class="labels-input-radio" for="correct-answer4"># 4</label>
+            <input
+              type="radio"
+              id="correct-answer4"
+              name="correct-answer"
+              value="option4"
+              required
+            />
+          </fieldset>
+        </div>
+        <div class="button-wrapper">
+          <button type="submit" class="submit-button">Submit</button>
+          <button type="reset" class="reset-button">Add More</button>
+          <button type="button" class="shuffle-button">Shuffle Answers</button>
+        </div>
+      </form>
+      <!-- Buttons to perform different functions -->
+    </main>
+
+    <footer>
+      <p>&copy; 2025 HYF. All Rights Reserved.</p>
+      <p>
+        Contact: <a href="tel:+4553819612">Phone: +45 53819612 </a> |
+        <a href="wasimhussain3@gmail.com">Email: wasimhussain3@gmail.com</a
+        ><br /><a href="https://linkedin.com/in/your-profile">LinkedIn</a> |
+        <a href="https://github.com/your-profile">GitHub</a>
+      </p>
+    </footer>
+    <script src="commonFunction.js"></script>
+    <script src="quizInputForm.js"></script>
+  </body>
+</html>
