@@ -1,11 +1,16 @@
+popUpDisplay("Click Competition Button Again To Start Game.");
+
 const navItemToStartGame = document.getElementById("game");
-navItemToStartGame.addEventListener("click", competition);
+navItemToStartGame.addEventListener("click", function (e) {
+  e.preventDefault();
+  competition();
+});
 
 function competition() {
   const winnerSound = new Audio("sounds/winsound.wav");
 
   let quizGameDisplay = document.querySelector(".game-diaply-area");
-  console.log(quizGameDisplay);
+
   if (quizGameDisplay) {
     quizGameDisplay.innerHTML = "";
   } else {
@@ -45,13 +50,16 @@ function competition() {
   quizGameDisplay.appendChild(startButton);
 
   startButton.addEventListener("click", () => {
-    if (!playerName1.value || !playerName2.value) {
+    if (!playerName1.value.trim() || !playerName2.value.trim()) {
       quizGameDisplay.innerHTML = "";
       errorOrNormalMessageContainer("ERROR: Enter Both Players Names");
       return;
     }
 
-    if (playerName1.value.toLowerCase() === playerName2.value.toLowerCase()) {
+    if (
+      playerName1.value.toLowerCase().trim() ===
+      playerName2.value.toLowerCase().trim()
+    ) {
       quizGameDisplay.innerHTML = "";
       errorOrNormalMessageContainer(
         "ERROR: Both Players Cannot Have Same Names"
@@ -60,7 +68,7 @@ function competition() {
     }
 
     quizGameDisplay.innerHTML = "";
-    errorOrNormalMessageContainer("");
+    errorOrNormalMessageContainer("₊˚✧ GAME STARTED ✧˚₊");
 
     const competitionSubDiv = document.createElement("div");
     competitionSubDiv.classList.add("competition-sub-div");
@@ -172,6 +180,7 @@ function competition() {
         winnerMessageDiv.innerText = `${playerName2.value} is the Winner`;
         quizGameDisplay.appendChild(winnerMessageDiv);
         winnerSound.play();
+        errorOrNormalMessageContainer("₊˚✧ GAME OVER ✧˚₊");
         disableAllButtons();
       }
     }
@@ -242,7 +251,6 @@ function competition() {
             }
 
             quizGameDisplay.innerHTML = "";
-            errorOrNormalMessageContainer("");
 
             const competitionSubDiv = document.createElement("div");
             competitionSubDiv.classList.add("competition-sub-div");

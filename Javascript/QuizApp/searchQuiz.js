@@ -1,5 +1,10 @@
+popUpDisplay("Click Search Button Again To Perform Search.");
+
 const navItemToSearch = document.getElementById("search");
-navItemToSearch.addEventListener("click", searchInQuestions);
+navItemToSearch.addEventListener("click", function (e) {
+  e.preventDefault();
+  searchInQuestions();
+});
 
 function searchInQuestions() {
   try {

@@ -28,6 +28,4 @@ async function fetchQuizData() {
 
 (async function () {
   fetchedQuizData = await fetchQuizData();
-
-  console.log(fetchedQuizData);
 })();

@@ -1,15 +1,6 @@
 // I kept some variables here which i need on all pages
 let quizQuestionArray = []; // This is the array where all the quiz questions will be stored for run time and can be seen in console.log
 
-// Function to remove some div using class name
-function removeDivByClassName() {
-  const divToRemove = document.getElementById("to-remove");
-  if (divToRemove) {
-    console.log(divToRemove);
-    divToRemove.remove();
-  }
-}
-
 //Toggle button Feature
 const themeToggleButton = document.getElementById("theme-toggle");
 const body = document.body;
@@ -47,5 +38,17 @@ function errorOrNormalMessageContainer(message) {
 
   setTimeout(() => {
     messageContainer.style.display = "none";
+  }, 3000);
+}
+
+function popUpDisplay(message) {
+  const popupMessage = document.createElement("div");
+  popupMessage.classList.add("popup-message");
+  popupMessage.innerText = message;
+
+  document.body.appendChild(popupMessage);
+
+  setTimeout(function () {
+    popupMessage.remove();
   }, 3000);
 }

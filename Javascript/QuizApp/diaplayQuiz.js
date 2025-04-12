@@ -1,8 +1,12 @@
+popUpDisplay("Click Display Button Again To View All Quiz Questions.");
+
 const navItemToDisplay = document.getElementById("display");
-navItemToDisplay.addEventListener("click", quizListDisplay);
+navItemToDisplay.addEventListener("click", function (e) {
+  e.preventDefault();
+  quizListDisplay();
+});
 
 function quizListDisplay(sortOrder = "asc") {
-  console.log(fetchedQuizData);
   try {
     if (!fetchedQuizData || fetchedQuizData.length === 0) {
       errorOrNormalMessageContainer("ERROR: No quiz questions available.");
