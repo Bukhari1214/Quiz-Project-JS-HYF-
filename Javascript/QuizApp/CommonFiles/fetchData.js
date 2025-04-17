@@ -1,5 +1,3 @@
-let fetchedQuizData;
-
 async function fetchQuizData() {
   let fetchedData = null;
 
@@ -25,7 +23,3 @@ async function fetchQuizData() {
     }
   }
 }
-
-(async function () {
-  fetchedQuizData = await fetchQuizData();
-})();
