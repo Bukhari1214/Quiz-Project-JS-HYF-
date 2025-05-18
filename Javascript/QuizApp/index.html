@@ -3,107 +3,107 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>QuizApp@Wasim</title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="icon" href="/images/logo.png" type="image/png" />
+    <title>Quiz Application Project</title>
+    <link rel="stylesheet" href="/CSS/styles.css" />
   </head>
   <body>
     <header>
-      <h1>Quiz Question Input Form</h1>
+      <button id="theme-toggle" class="toggle-button">Change Theme</button>
+
+      <div class="heading-container">
+        <div class="logo-container">
+          <img src="/Logo/logo.png" alt="Logo" class="logo" />
+        </div>
+
+        <div class="heading-nav-container">
+          <h1>Quiz Application Project</h1>
+          <h2>Welcome to HOME PAGE</h2>
+          <nav>
+            <ul>
+              <li><a href="index.html">Home</a></li>
+              <li><a href="/InputPage/inputform.html">Input</a></li>
+              <li id="search"><a href="/SearchPage/search.html">Search</a></li>
+              <li id="display">
+                <a href="/DisplayPage/display.html">Display</a>
+              </li>
+              <li id="game">
+                <a href="/CompetitionPage/game.html">Competition</a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </div>
     </header>
 
-    <form class="question-input-form">
-      <!-- Possible Question -->
-      <label for="question">Enter the Question:</label>
-      <input
-        type="text"
-        id="question"
-        name="question"
-        maxlength="140"
-        placeholder="Enter Your Question Here"
-        required
-      />
-      <!-- Possible Answers -->
-      <div class="answers-container">
-        <label for="option1">Answer # 1:</label>
-        <input
-          type="text"
-          id="option1"
-          name="answer"
-          placeholder="Answer option 01"
-          required
-        />
-        <label for="option2">Answer # 2:</label>
-        <input
-          type="text"
-          id="option2"
-          name="answer"
-          placeholder="Answer option 02"
-          required
-        />
-        <label for="option3">Answer # 3:</label>
-        <input
-          type="text"
-          id="option3"
-          name="answer"
-          placeholder="Answer option 03"
-          required
-        />
-        <label for="option4">Answer # 4:</label>
-        <input
-          type="text"
-          id="option4"
-          name="answer"
-          placeholder="Answer option 04"
-          required
-        />
-      </div>
-      <!-- Correct answer -->
-      <div class="select-correct-answer">
-        <fieldset>
-          <legend>Select the Correct Answer:</legend>
-          <label class="labels-input-radio" for="correct-answer1"># 1</label>
-          <input
-            type="radio"
-            id="correct-answer1"
-            name="correct-answer"
-            value="option1"
-            required
-          />
+    <main>
+      <h1>Introduction to Quiz App Project</h1>
+      <p>
+        The <strong>Quiz App</strong> is a web-based application developed as
+        part of my learning in web development. It allows users to input, fetch,
+        search, and display quiz questions efficiently. The app provides the
+        following key features:
+      </p>
 
-          <label class="labels-input-radio" for="correct-answer2"># 2</label>
-          <input
-            type="radio"
-            id="correct-answer2"
-            name="correct-answer"
-            value="option2"
-            required
-          />
+      <h2>Key Features</h2>
+      <ul>
+        <li>
+          <strong>Input and Store Quiz Questions:</strong> Users can submit quiz
+          questions, which are then stored for future use.
+        </li>
+        <li>
+          <strong>Fetch Stored Questions:</strong> Pre-existing quiz questions
+          can be fetched and displayed.
+        </li>
+        <li>
+          <strong>Search Functionality:</strong> Users can search quiz questions
+          based on their content.
+        </li>
+        <li>
+          <strong>Question Display:</strong> Users can view all quiz questions
+          entered or fetched, with the ability to sort them in ascending or
+          descending order.
+        </li>
+        <li>
+          <strong>Game Mode:</strong> The app offers a competitive quiz game for
+          two players, where the winner is determined based on the score, with
+          the maximum score calculated as half the total number of questions.
+        </li>
+      </ul>
 
-          <label class="labels-input-radio" for="correct-answer3"># 3</label>
-          <input
-            type="radio"
-            id="correct-answer3"
-            name="correct-answer"
-            value="option3"
-            required
-          />
+      <h2>Enhanced UI Features</h2>
+      <ul>
+        <li>
+          <strong>Coloring Input Fields:</strong> Correct answers are
+          highlighted before submission, providing visual feedback.
+        </li>
+        <li>
+          <strong>Shuffling Answers:</strong> The order of multiple-choice
+          answers is shuffled for each quiz, ensuring fairness.
+        </li>
+      </ul>
 
-          <label class="labels-input-radio" for="correct-answer4"># 4</label>
-          <input
-            type="radio"
-            id="correct-answer4"
-            name="correct-answer"
-            value="option4"
-            required
-          />
-        </fieldset>
-      </div>
-      <div class="btn-wrapper">
-        <button type="submit" class="control-buttons">Submit Question</button>
-      </div>
-    </form>
-    <script src="features.js"></script>
-    <script src="index.js"></script>
+      <p>
+        The app also features a simple UI design, focused on ease of use and
+        providing an intuitive experience for users. It incorporates modern web
+        development techniques, including responsive design, dynamic content
+        updates, and asynchronous data fetching to create an interactive and
+        engaging platform for quiz enthusiasts.
+      </p>
+    </main>
+
+    <footer>
+      <p>&copy; 2025 HYF. All Rights Reserved.</p>
+      <p>
+        Contact: <a href="tel:+4553819612">Phone: +45 53819612 </a> |
+        <a href="wasimhussain3@gmail.com">Email: wasimhussain3@gmail.com</a
+        ><br /><a
+          href="https://www.linkedin.com/in/sayyed-wasim-hussain-bukhari-041342299/"
+          >LinkedIn</a
+        >
+        |
+        <a href="https://github.com/Bukhari1214">GitHub</a>
+      </p>
+    </footer>
+    <script src="/CommonFiles/commonFunction.js"></script>
   </body>
 </html>
